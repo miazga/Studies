@@ -11,7 +11,6 @@ using Server.Api.Persistence;
 namespace Server.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
     public class StudiesController : ControllerBase
     {
         private readonly ILogger<StudiesController> _logger;
@@ -23,14 +22,14 @@ namespace Server.Api.Controllers
             _studiesRepository = studiesRepository;
         }
 
-        [HttpGet]
+        [HttpGet("/api/studies")]
         public async Task<IActionResult> Get([FromQuery] StudiesQuery query)
         {
             var result = await _studiesRepository.SearchAsync(query);
             return Ok(result);
         }
 
-        [HttpPost("/Study")]
+        [HttpPost("/api/study")]
         public async Task<IActionResult> AddStudy(AddStudyCommand command)
         {
             if (string.IsNullOrWhiteSpace(command.Name)) return BadRequest(command);
@@ -47,8 +46,8 @@ namespace Server.Api.Controllers
             return Accepted();
         }
 
-        [HttpPut("/Study/{id}/Result")]
-        public async Task<IActionResult> AddResult(Guid id, [FromBody] AddResultCommand command)
+        [HttpPut("/api/study/{id}/result")]
+        public async Task<IActionResult> AddStudyResult(Guid id, [FromBody] AddResultCommand command)
         {
             if (command == null || id == Guid.Empty || command.StationId == 0 || command.SensorId == 0 ||
                 command.Timestamp == 0)

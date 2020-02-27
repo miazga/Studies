@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+//@ts-ignore
 import baseUrl from './api';
 
 const instance = axios.create({

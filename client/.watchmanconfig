@@ -1,0 +1,3 @@
+{
+  "root_restrict_files": ["../.git"]
+}

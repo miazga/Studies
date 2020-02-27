@@ -20,9 +20,6 @@ namespace Server.Api.Persistence.MongoDb.Types
 
         public IEnumerable<T> Items { get; }
 
-        public bool IsEmpty => Items == null || !Items.Any();
-        public bool IsNotEmpty => !IsEmpty;
-
         public static PagedResult<T> Empty => new PagedResult<T>();
 
         public static PagedResult<T> Create(IEnumerable<T> items,

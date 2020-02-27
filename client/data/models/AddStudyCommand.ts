@@ -1,0 +1,3 @@
+interface AddStudyCommand {
+  name: string;
+}
