@@ -11,7 +11,7 @@ using Server.Api.Persistence;
 namespace Server.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class StudiesController : ControllerBase
     {
         private readonly ILogger<StudiesController> _logger;

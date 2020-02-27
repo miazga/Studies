@@ -1,10 +1,21 @@
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View, Button } from 'react-native';
 
-const HomeScreen = () => {
+import { axios } from '../axios';
+
+const HomeScreen = ({ navigation }) => {
+  React.useEffect(() => {
+    get();
+  }, []);
+
+  const get = async () => {
+    const result = await axios.get('Studies');
+    console.log(result.data);
+  };
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      <Button title="Go to Details" onPress={() => navigation.navigate('Details')} />
     </View>
   );
 };
