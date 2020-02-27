@@ -1,13 +1,13 @@
-import React from 'react';
+import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-const HomeScreen =() => {
+const HomeScreen = () => {
   return (
     <View style={styles.container}>
       <Text>Open up App.tsx to start working on your app!</Text>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
