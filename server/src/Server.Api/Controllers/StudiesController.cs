@@ -30,7 +30,7 @@ namespace Server.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
+        [HttpPost("/Study")]
         public async Task<IActionResult> AddStudy(AddStudyCommand command)
         {
             if (string.IsNullOrWhiteSpace(command.Name)) return BadRequest(command);
@@ -47,10 +47,10 @@ namespace Server.Api.Controllers
             return Accepted();
         }
 
-        [HttpPut]
-        public async Task<IActionResult> AddResult(AddResultCommand command)
+        [HttpPut("/Study/{id}/Result")]
+        public async Task<IActionResult> AddResult(Guid id, [FromBody] AddResultCommand command)
         {
-            if (command == null || command.Id == Guid.Empty || command.StationId == 0 || command.SensorId == 0 ||
+            if (command == null || id == Guid.Empty || command.StationId == 0 || command.SensorId == 0 ||
                 command.Timestamp == 0)
                 return BadRequest(command);
 
@@ -62,7 +62,7 @@ namespace Server.Api.Controllers
                 DateTime = DateTimeOffset.FromUnixTimeSeconds(command.Timestamp).DateTime
             };
 
-            await _studiesRepository.AddResultAsync(command.Id, result);
+            await _studiesRepository.AddResultAsync(id, result);
             return Accepted();
         }
     }
