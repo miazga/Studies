@@ -24,7 +24,7 @@ namespace Server.Api.Persistence.MongoDb
             TQuery query) where TQuery : PagedQueryBase;
 
         Task AddAsync(TEntity entity);
-        Task UpdateAsync(FilterDefinition<TEntity> filterDefinition,UpdateDefinition<TEntity> updateDefinition);
+        Task UpdateAsync(FilterDefinition<TEntity> filterDefinition, UpdateDefinition<TEntity> updateDefinition);
         Task DeleteAsync(Guid id);
         Task DeleteAsync(Expression<Func<TEntity, bool>> predicate);
         Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> predicate);
@@ -75,7 +75,8 @@ namespace Server.Api.Persistence.MongoDb
             await Collection.InsertOneAsync(entity);
         }
 
-        public async Task UpdateAsync(FilterDefinition<TEntity> filterDefinition,UpdateDefinition<TEntity> updateDefinition)
+        public async Task UpdateAsync(FilterDefinition<TEntity> filterDefinition,
+            UpdateDefinition<TEntity> updateDefinition)
         {
             await Collection.UpdateOneAsync(filterDefinition, updateDefinition);
         }

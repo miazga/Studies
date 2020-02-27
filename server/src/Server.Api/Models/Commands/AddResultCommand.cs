@@ -1,6 +1,3 @@
-using System;
-using Microsoft.AspNetCore.Mvc;
-
 namespace Server.Api.Models.Commands
 {
     public class AddResultCommand

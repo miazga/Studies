@@ -1,9 +1,6 @@
-using System;
-using System.Linq;
 using System.Security.Authentication;
 using Autofac;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using Server.Api.IoC;
 using Server.Api.Persistence.MongoDb.Types;
@@ -40,10 +37,6 @@ namespace Server.Api.Persistence.MongoDb
                 var client = context.Resolve<MongoClient>();
                 return client.GetDatabase(options.Database);
             }).InstancePerLifetimeScope();
-
-            builder.RegisterType<MongoDbInitializer>()
-                .As<IMongoDbInitializer>()
-                .InstancePerLifetimeScope();
         }
 
         public static void AddMongoRepository<TEntity>(this ContainerBuilder builder, string collectionName)
@@ -52,22 +45,6 @@ namespace Server.Api.Persistence.MongoDb
             builder.Register(ctx => new MongoRepository<TEntity>(ctx.Resolve<IMongoDatabase>(), collectionName))
                 .As<IMongoRepository<TEntity>>()
                 .InstancePerLifetimeScope();
-        }
-
-
-        public static IServiceCollection AddInitializers(this IServiceCollection services, params Type[] initializers)
-        {
-            return initializers == null
-                ? services
-                : services.AddTransient<IStartupInitializer, StartupInitializer>(c =>
-                {
-                    var startupInitializer = new StartupInitializer();
-                    var validInitializers = initializers.Where(t => typeof(IMongoDbInitializer).IsAssignableFrom(t));
-                    foreach (var initializer in validInitializers)
-                        startupInitializer.AddInitializer(c.GetService(initializer) as IMongoDbInitializer);
-
-                    return startupInitializer;
-                });
         }
     }
 }
