@@ -14,7 +14,8 @@ namespace Server.Api.Persistence
     public interface IStudiesRepository
     {
         Task<PagedResult<Study>> SearchAsync(StudiesQuery query);
-        Task Add(Study entity);
+        Task AddAsync(Study entity);
+        Task AddResultAsync(Guid id, Result result);
     }
 
     public class StudiesRepository : IStudiesRepository
@@ -55,9 +56,17 @@ namespace Server.Api.Persistence
             return await _repository.FindAsync(filter, orderPredicate, query);
         }
 
-        public Task Add(Study entity)
+        public Task AddAsync(Study entity)
         {
             return _repository.AddAsync(entity);
+        }
+
+        public async Task AddResultAsync(Guid id, Result result)
+        {
+            var filterDefinition = Builders<Study>.Filter.Eq(x => x.Id, id);
+            var updateDefinition = Builders<Study>.Update.Push(x => x.Results, result);
+
+            await _repository.UpdateAsync(filterDefinition, updateDefinition);
         }
     }
 }

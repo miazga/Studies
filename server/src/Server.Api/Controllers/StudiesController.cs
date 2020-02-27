@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -30,17 +31,38 @@ namespace Server.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddStudyCommand command)
+        public async Task<IActionResult> AddStudy(AddStudyCommand command)
         {
             if (string.IsNullOrWhiteSpace(command.Name)) return BadRequest(command);
+
             var study = new Study
             {
                 Id = Guid.NewGuid(),
                 Name = command.Name,
                 Created = DateTime.Now,
-                State = State.Enabled
+                State = State.Enabled,
+                Results = new List<Result>()
             };
-            await _studiesRepository.Add(study);
+            await _studiesRepository.AddAsync(study);
+            return Accepted();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> AddResult(AddResultCommand command)
+        {
+            if (command == null || command.Id == Guid.Empty || command.StationId == 0 || command.SensorId == 0 ||
+                command.Timestamp == 0)
+                return BadRequest(command);
+
+            var result = new Result
+            {
+                StationId = command.StationId,
+                SensorId = command.SensorId,
+                Value = command.Value,
+                DateTime = DateTimeOffset.FromUnixTimeSeconds(command.Timestamp).DateTime
+            };
+
+            await _studiesRepository.AddResultAsync(command.Id, result);
             return Accepted();
         }
     }
