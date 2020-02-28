@@ -7,10 +7,12 @@ import { axios } from '../axios';
 const NetworkErrorBanner = () => {
   const [visible, setVisible] = React.useState<boolean>(false);
   const [message, setMessage] = React.useState<string>('');
+  const [body, setBody] = React.useState<string>('');
 
   const interceptor = React.useRef(
     axios.interceptors.response.use(
       response => {
+        setBody(response.data);
         return response;
       },
       error => {
@@ -37,7 +39,7 @@ const NetworkErrorBanner = () => {
         },
       ]}
       icon={props => <Feather {...props} name="wifi-off" />}>
-      {`There was a problem with internet connection:\n ${message}`}
+      {`${message}\n${body}`}
     </Banner>
   );
 };

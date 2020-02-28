@@ -32,7 +32,7 @@ namespace Server.Api.Controllers
         [HttpPost("/api/study")]
         public async Task<IActionResult> AddStudy(AddStudyCommand command)
         {
-            if (string.IsNullOrWhiteSpace(command.Name)) return BadRequest(command);
+            if (string.IsNullOrEmpty(command.Name)) return BadRequest("Name cannot be empty");
 
             var study = new Study
             {
@@ -56,6 +56,15 @@ namespace Server.Api.Controllers
             await _studiesRepository.UpdateAsync(id, command.State, command.Name);
             return Accepted();
         }
+
+        [HttpGet("/api/study/{id}/results")]
+        public async Task<IActionResult> GetStudyResults(Guid id,[FromQuery] ResultsQuery query)
+        {
+            if (id == Guid.Empty) return BadRequest("Id cannot be empty");
+            var result = await _studiesRepository.GetResultsAsync(id, query);
+            return Ok(result);
+        }
+        
         [HttpPut("/api/study/{id}/result")]
         public async Task<IActionResult> AddStudyResult(Guid id, [FromBody] AddResultCommand command)
         {

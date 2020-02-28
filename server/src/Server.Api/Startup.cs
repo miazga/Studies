@@ -41,7 +41,7 @@ namespace Server.Api
             builder.RegisterAssemblyTypes(Assembly.GetEntryAssembly())
                 .AsImplementedInterfaces();
             builder.AddMongo();
-            builder.AddMongoRepository<Study>("Studies");
+            builder.AddStudiesRepository();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -3,7 +3,6 @@ using Autofac;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using Server.Api.IoC;
-using Server.Api.Persistence.MongoDb.Types;
 
 namespace Server.Api.Persistence.MongoDb
 {
@@ -39,11 +38,10 @@ namespace Server.Api.Persistence.MongoDb
             }).InstancePerLifetimeScope();
         }
 
-        public static void AddMongoRepository<TEntity>(this ContainerBuilder builder, string collectionName)
-            where TEntity : IIdentifiable
+        public static void AddStudiesRepository(this ContainerBuilder builder)
         {
-            builder.Register(ctx => new MongoRepository<TEntity>(ctx.Resolve<IMongoDatabase>(), collectionName))
-                .As<IMongoRepository<TEntity>>()
+            builder.Register(ctx => new StudiesRepository(ctx.Resolve<IMongoDatabase>(), "Studies"))
+                .As<IStudiesRepository>()
                 .InstancePerLifetimeScope();
         }
     }

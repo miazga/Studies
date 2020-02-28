@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 import { FAB, List, ActivityIndicator } from 'react-native-paper';
 
 import StudiesListItem from '../components/StudiesListItem';
-import { getStudies, addStudyResult } from '../data';
+import { getStudies } from '../data';
 import { Study } from '../data/models/Study';
 import { RootStackParamList } from '../providers/NavigationProvider';
 import BaseScreen from './BaseScreen';
@@ -32,21 +32,13 @@ const StudiesScreen = ({ navigation }: StudiesScreenProps) => {
     setLoading(false);
   };
 
-  const add = async () => {
-    await addStudyResult({
-      id: 'f8c024eb-8d15-458c-91e0-b7ab86386d12',
-      stationId: 1,
-      sensorId: 1,
-      value: 1,
-      timestamp: 1111,
-    });
-  };
-
   const handleAddNewPress = () => {
     navigation.navigate('AddStudy', { onSubmit: loadData });
   };
 
-  const handleRefreshPress = () => {};
+  const handleRefreshPress = () => {
+    // todo handle refresh
+  };
 
   return (
     <BaseScreen>

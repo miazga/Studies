@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
@@ -79,6 +81,46 @@ namespace Server.Api.Persistence.MongoDb
         }
 
         public static IMongoQueryable<T> Limit<T>(this IMongoQueryable<T> collection,
+            int page = 1, int resultsPerPage = 20)
+        {
+            if (page <= 0) page = 1;
+            if (resultsPerPage <= 0) resultsPerPage = 20;
+            var skip = (page - 1) * resultsPerPage;
+            var data = collection.Skip(skip)
+                .Take(resultsPerPage);
+
+            return data;
+        }
+        
+        public static PagedResult<T> Paginate<T>(this IEnumerable<T> collection,
+            PagedQueryBase query)
+        {
+            return collection.Paginate(query.Page, query.Results);
+        }
+
+        public static PagedResult<T> Paginate<T>(this IEnumerable<T> collection,
+            int page = 1, int resultsPerPage = 20)
+        {
+            if (page <= 0) page = 1;
+
+            if (resultsPerPage <= 0) resultsPerPage = 20;
+
+            var count = collection.Count();
+
+            if (count == 0) return PagedResult<T>.Empty;
+
+            var totalPages = (int) Math.Ceiling((decimal) count / resultsPerPage);
+            var data = collection.Limit(page, resultsPerPage).ToList();
+
+            return PagedResult<T>.Create(data, page, resultsPerPage, totalPages, count);
+        }
+        
+        public static IEnumerable<T> Limit<T>(this IEnumerable<T> collection, PagedQueryBase query)
+        {
+            return collection.Limit(query.Page, query.Results);
+        }
+
+        public static IEnumerable<T> Limit<T>(this IEnumerable<T> collection,
             int page = 1, int resultsPerPage = 20)
         {
             if (page <= 0) page = 1;

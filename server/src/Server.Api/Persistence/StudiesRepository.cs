@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -17,15 +18,18 @@ namespace Server.Api.Persistence
         Task AddAsync(Study entity);
         Task UpdateAsync(Guid id, State state, string name);
         Task AddResultAsync(Guid id, Result result);
+        Task<PagedResult<Result>> GetResultsAsync(Guid studyId, ResultsQuery query);
     }
 
     public class StudiesRepository : IStudiesRepository
     {
-        private readonly IMongoRepository<Study> _repository;
+        protected IMongoCollection<Study> Collection { get; }
 
-        public StudiesRepository(IMongoRepository<Study> repository)
+        public StudiesRepository(IMongoDatabase database, string collectionName)
         {
-            _repository = repository;
+            
+            Collection = database.GetCollection<Study>(collectionName);
+            
         }
 
         public async Task<PagedResult<Study>> SearchAsync(StudiesQuery query)
@@ -49,12 +53,12 @@ namespace Server.Api.Persistence
 
             Expression<Func<Study, object>> orderPredicate = x => x.Created;
 
-            return await _repository.FindAsync(filter, projection, orderPredicate, query);
+            return await Collection.Find(filter).Project<Study>(projection).SortByDescending(orderPredicate).PaginateAsync(query);
         }
 
         public Task AddAsync(Study entity)
         {
-            return _repository.AddAsync(entity);
+            return Collection.InsertOneAsync(entity);
         }
 
         public async Task AddResultAsync(Guid id, Result result)
@@ -62,14 +66,22 @@ namespace Server.Api.Persistence
             var filterDefinition = Builders<Study>.Filter.Eq(x => x.Id, id);
             var updateDefinition = Builders<Study>.Update.Push(x => x.Results, result);
 
-            await _repository.UpdateAsync(filterDefinition, updateDefinition);
+            await Collection.UpdateOneAsync(filterDefinition, updateDefinition);
         }
+
+        public async Task<PagedResult<Result>> GetResultsAsync(Guid studyId, ResultsQuery query)
+        {
+            var filter = Builders<Study>.Filter.Eq(x => x.Id, studyId);
+            var result = await Collection.Find(filter).Project(x => x.Results).FirstOrDefaultAsync();
+            return  result.OrderByDescending(x => x.DateTime).Paginate(query);
+        }
+
         public async Task UpdateAsync(Guid id, State state, string name)
         {
             var filterDefinition = Builders<Study>.Filter.Eq(x => x.Id, id);
             var updateDefinition = Builders<Study>.Update.Set(x => x.Name, name).Set(x => x.State, state);
 
-            await _repository.UpdateAsync(filterDefinition, updateDefinition);
+            await Collection.UpdateOneAsync(filterDefinition, updateDefinition);
         }
     }
 }

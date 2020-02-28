@@ -17,8 +17,8 @@ type ModifyStudyScreenProps = {
 
 const ModifyStudyScreen = ({ route, navigation }: ModifyStudyScreenProps) => {
   const { study, onSubmit } = route.params;
-  const [name, setName] = React.useState<string>(study?.name);
-  const [state, setState] = React.useState<StudyState>(study?.state || StudyState.Enabled);
+  const [name, setName] = React.useState<string>(study.name);
+  const [state, setState] = React.useState<StudyState>(study.state || StudyState.Enabled);
 
   const handleSave = async () => {
     await updateStudy({ id: study.id, name, state });
@@ -38,7 +38,7 @@ const ModifyStudyScreen = ({ route, navigation }: ModifyStudyScreenProps) => {
       </View>
       <TextInput label="Name" value={name} onChangeText={setName} />
       <View style={styles.row}>
-        <Subheading>Enabled</Subheading>
+        <Subheading>{state}</Subheading>
         <Switch
           value={state === StudyState.Enabled}
           onValueChange={() => {
