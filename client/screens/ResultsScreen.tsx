@@ -1,8 +1,8 @@
-import { RouteProp, CompositeNavigationProp } from '@react-navigation/native';
+import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import moment from 'moment';
 import * as React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Subheading, DataTable, ActivityIndicator } from 'react-native-paper';
 
 import { getStudyResults } from '../data';
@@ -40,12 +40,6 @@ const ResultsList = ({ studyId }: ResultsListProps) => {
   const webSocket = React.useRef(new WebSocket(`${baseUri}/studyresults?id=${studyId}`));
 
   const startConnection = React.useCallback(() => {
-    webSocket.current.onopen = () => {
-      // connection opened
-
-      console.log('connected');
-    };
-
     webSocket.current.onmessage = e => {
       const item = JSON.parse(e.data) as Result;
       console.log(item);
@@ -54,16 +48,6 @@ const ResultsList = ({ studyId }: ResultsListProps) => {
         return [{ ...item }, ...items];
       });
       setTotalResults(totalResults => totalResults + 1);
-    };
-
-    webSocket.current.onerror = e => {
-      // an error occurred
-      console.log(e);
-    };
-
-    webSocket.current.onclose = e => {
-      // connection closed
-      console.log(e.code, e.reason);
     };
   }, []);
 
@@ -116,7 +100,7 @@ type ResultsScreenProps = {
   navigation: StackNavigationProp<RootStackParamList>;
 };
 
-const ResultsScreen = ({ route, navigation }: ResultsScreenProps) => {
+const ResultsScreen = ({ route }: ResultsScreenProps) => {
   const { study } = route.params;
   return (
     <BaseScreen>
