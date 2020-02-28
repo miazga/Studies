@@ -5,7 +5,7 @@ import NetworkErrorBanner from '../components/NetworkErrorBanner';
 
 const BaseScreen = props => {
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <NetworkErrorBanner />
       {props.children}
     </View>

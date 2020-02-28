@@ -15,14 +15,15 @@ type ModifyStudyScreenProps = {
   navigation: StackNavigationProp<RootStackParamList>;
 };
 
-const ModifyStudyScreen = ({ route }: ModifyStudyScreenProps) => {
+const ModifyStudyScreen = ({ route, navigation }: ModifyStudyScreenProps) => {
   const { study, onSubmit } = route.params;
-  const [name, setName] = React.useState<string>(study.name);
-  const [state, setState] = React.useState<StudyState>(study.state);
+  const [name, setName] = React.useState<string>(study?.name);
+  const [state, setState] = React.useState<StudyState>(study?.state || StudyState.Enabled);
 
   const handleSave = async () => {
-    await onSubmit();
     await updateStudy({ id: study.id, name, state });
+    await onSubmit();
+    navigation.goBack();
   };
 
   return (

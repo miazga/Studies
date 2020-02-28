@@ -4,6 +4,7 @@ import * as React from 'react';
 import { withTheme } from 'react-native-paper';
 
 import { Study } from '../data/models/Study';
+import AddStudyScreen from '../screens/AddStudyScreen';
 import ModifyStudyScreen from '../screens/ModifyStudyScreen';
 import ResultsScreen from '../screens/ResultsScreen';
 import StudiesScreen from '../screens/StudiesScreen';
@@ -12,6 +13,7 @@ export type RootStackParamList = {
   Studies: undefined;
   Results: { study: Study };
   ModifyStudy: { study: Study; onSubmit: () => Promise<void> };
+  AddStudy: { onSubmit: () => Promise<void> };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -37,9 +39,16 @@ const NavigationProvider = ({ theme }) => (
       <Stack.Screen
         name="ModifyStudy"
         options={({ route }) => ({
-          title: route.params.study ? `Modify ${route.params.study.name}` : 'Add a new study',
+          title: `Modify ${route.params.study.name}`,
         })}
         component={ModifyStudyScreen}
+      />
+      <Stack.Screen
+        name="AddStudy"
+        options={() => ({
+          title: `Add a new study`,
+        })}
+        component={AddStudyScreen}
       />
     </Stack.Navigator>
   </NavigationContainer>
