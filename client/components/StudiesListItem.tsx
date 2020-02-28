@@ -3,18 +3,23 @@ import moment from 'moment';
 import * as React from 'react';
 import { List, TouchableRipple } from 'react-native-paper';
 
+import { Study } from '../data/models/Study';
+
 type StudiesListItemProps = {
   study: Study;
+  onEditSubmit: () => Promise<void>;
 };
 
-const StudiesListItem = ({ study }: StudiesListItemProps) => {
+const StudiesListItem = ({ study, onEditSubmit }: StudiesListItemProps) => {
   const navigation = useNavigation();
 
   const handleItemPress = () => {
     navigation.navigate('Results', { study });
   };
 
-  const handleItemLongPress = () => {};
+  const handleItemLongPress = () => {
+    navigation.navigate('ModifyStudy', { study, onSubmit: onEditSubmit });
+  };
 
   return (
     <TouchableRipple onPress={handleItemPress} onLongPress={handleItemLongPress}>

@@ -1,10 +1,12 @@
-interface GetStudiesQuery {
+import { Study } from './Study';
+
+export interface GetStudiesQuery {
   search?: string;
   page?: number;
   results?: number;
 }
 
-interface GetStudiesQueryResponse {
+export interface GetStudiesQueryResponse {
   items: Study[];
   currentPage: number;
   resultsPerPage: number;

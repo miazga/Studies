@@ -15,6 +15,7 @@ namespace Server.Api.Persistence
     {
         Task<PagedResult<Study>> SearchAsync(StudiesQuery query);
         Task AddAsync(Study entity);
+        Task UpdateAsync(Guid id, State state, string name);
         Task AddResultAsync(Guid id, Result result);
     }
 
@@ -60,6 +61,13 @@ namespace Server.Api.Persistence
         {
             var filterDefinition = Builders<Study>.Filter.Eq(x => x.Id, id);
             var updateDefinition = Builders<Study>.Update.Push(x => x.Results, result);
+
+            await _repository.UpdateAsync(filterDefinition, updateDefinition);
+        }
+        public async Task UpdateAsync(Guid id, State state, string name)
+        {
+            var filterDefinition = Builders<Study>.Filter.Eq(x => x.Id, id);
+            var updateDefinition = Builders<Study>.Update.Set(x => x.Name, name).Set(x => x.State, state);
 
             await _repository.UpdateAsync(filterDefinition, updateDefinition);
         }

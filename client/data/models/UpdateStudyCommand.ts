@@ -1,8 +1,7 @@
 import { StudyState } from './StudyState';
 
-export interface Study {
+export interface UpdateStudyCommand {
   id: string;
   name: string;
-  created: string;
   state: StudyState;
 }

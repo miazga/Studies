@@ -8,34 +8,23 @@ const NetworkErrorBanner = () => {
   const [visible, setVisible] = React.useState<boolean>(false);
   const [message, setMessage] = React.useState<string>('');
 
-  const handleAxiosErrors = () => {
-    axios.interceptors.request.use(
-      response => {
-        return response;
-      },
-      error => {
-        setVisible(true);
-        setMessage(error.message);
-        return Promise.reject(error);
-      }
-    );
-
+  const interceptor = React.useRef(
     axios.interceptors.response.use(
       response => {
         return response;
       },
       error => {
-        // Any status codes that falls outside the range of 2xx cause this function to trigger
-        // Do something with response error
         setVisible(true);
         setMessage(error.message);
         return Promise.reject(error);
       }
-    );
-  };
+    )
+  );
 
   React.useEffect(() => {
-    handleAxiosErrors();
+    return () => {
+      axios.interceptors.response.eject(interceptor.current);
+    };
   });
 
   return (

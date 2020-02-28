@@ -1,4 +1,4 @@
-interface AddStudyResultCommand {
+export interface AddStudyResultCommand {
   id: string;
   stationId: number;
   sensorId: number;

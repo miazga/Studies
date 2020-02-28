@@ -1,3 +1,3 @@
-interface AddStudyCommand {
+export interface AddStudyCommand {
   name: string;
 }
