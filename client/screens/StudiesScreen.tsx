@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { StyleSheet, View, Button } from 'react-native';
+import { List } from 'react-native-paper';
 
+import StudiesList from '../components/StudiesList';
 import { getStudies, addStudy, addStudyResult } from '../data';
+import BaseScreen from './BaseScreen';
 
 const StudiesScreen = ({ navigation }) => {
   React.useEffect(() => {
@@ -23,24 +26,12 @@ const StudiesScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Button
-        title="Go to Results"
-        onPress={() => navigation.navigate('Results', { name: 'XD' })}
-      />
-
-      <Button title="Add study" onPress={add} />
-    </View>
+    <BaseScreen>
+      <StudiesList />
+    </BaseScreen>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const styles = StyleSheet.create({});
 
 export default StudiesScreen;

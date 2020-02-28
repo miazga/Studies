@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import BaseScreen from './BaseScreen';
+
 const ResultsScreen = () => {
   return (
-    <View style={styles.container}>
+    <BaseScreen style={styles.container}>
       <Text>Open up App.tsx to start working on your app!</Text>
-    </View>
+    </BaseScreen>
   );
 };
 

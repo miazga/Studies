@@ -5,7 +5,7 @@ interface GetStudiesQuery {
 }
 
 interface GetStudiesQueryResponse {
-  items: any[];
+  items: Study[];
   currentPage: number;
   resultsPerPage: number;
   totalPages: number;
