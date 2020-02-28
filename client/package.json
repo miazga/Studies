@@ -5,7 +5,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "serve": "yarn serve web-build"
   },
   "dependencies": {
     "@expo/webpack-config": "^0.11.1",
@@ -44,6 +45,7 @@
     "eslint-config-universe": "^2.3.0",
     "file-loader": "^5.1.0",
     "prettier": "^1.19.1",
+    "serve": "^11.3.0",
     "typescript": "^3.6.2"
   },
   "private": true
