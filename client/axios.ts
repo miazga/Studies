@@ -5,7 +5,7 @@ import baseUrl from './api';
 
 const instance = axios.create({
   baseURL: baseUrl,
-  timeout: 3000,
+  timeout: 10000,
 });
 
 export { instance as axios };

@@ -38,6 +38,7 @@ const ResultsList = ({ studyId }: ResultsListProps) => {
   };
 
   const webSocket = React.useRef(new WebSocket(`${baseUri}/studyresults?id=${studyId}`));
+  // const webSocket = React.useRef({ current: {} });
 
   const startConnection = React.useCallback(() => {
     webSocket.current.onmessage = e => {
