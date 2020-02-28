@@ -25,7 +25,7 @@ const StudiesListItem = ({ study, onEditSubmit }: StudiesListItemProps) => {
     <TouchableRipple onPress={handleItemPress} onLongPress={handleItemLongPress}>
       <List.Item
         title={study.name}
-        description={moment(study.created).format('DD MMM HH:mm')}
+        description={moment(study.created).format('DD MMM YYYY HH:mm')}
         left={props => <List.Icon {...props} icon="folder" />}
         right={props => <List.Icon {...props} icon="chevron-right" />}
       />

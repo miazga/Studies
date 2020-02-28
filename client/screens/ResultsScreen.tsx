@@ -17,7 +17,7 @@ type ResultsListProps = {
 const ResultsList = ({ studyId }: ResultsListProps) => {
   const [items, setItems] = React.useState<Result[]>([]);
   const [page, setPage] = React.useState(0);
-  const [results] = React.useState(3);
+  const [results] = React.useState(5);
   const [totalResults, setTotalResults] = React.useState(0);
   const [totalPages, setTotalPages] = React.useState(0);
   const [loading, setLoading] = React.useState(true);
@@ -48,7 +48,7 @@ const ResultsList = ({ studyId }: ResultsListProps) => {
       ) : (
         items.map(item => (
           <DataTable.Row>
-            <DataTable.Cell>{item.created}</DataTable.Cell>
+            <DataTable.Cell>{moment(item.created).format('DD MMM HH:mm')}</DataTable.Cell>
             <DataTable.Cell numeric>{item.stationId}</DataTable.Cell>
             <DataTable.Cell numeric>{item.sensorId}</DataTable.Cell>
             <DataTable.Cell numeric>{item.value}</DataTable.Cell>
@@ -83,7 +83,7 @@ const ResultsScreen = ({ route, navigation }: ResultsScreenProps) => {
       </View>
       <View style={styles.row}>
         <Subheading>Created</Subheading>
-        <Subheading>{moment(study.created).format('DD MMM HH:mm')}</Subheading>
+        <Subheading>{moment(study.created).format('DD MMM YYYY HH:mm')}</Subheading>
       </View>
       <View style={styles.row}>
         <Subheading>State</Subheading>

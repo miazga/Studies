@@ -15,4 +15,8 @@
     <Folder Include="Models\Results" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Server.WebSocketManager\Server.WebSocketManager.csproj" />
+  </ItemGroup>
+
 </Project>
