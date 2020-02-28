@@ -8,7 +8,10 @@ import { Subheading, DataTable, ActivityIndicator } from 'react-native-paper';
 import { getStudyResults } from '../data';
 import { Result } from '../data/models';
 import { RootStackParamList } from '../providers/NavigationProvider';
+import baseUri from '../websocket';
 import BaseScreen from './BaseScreen';
+
+const results = 5;
 
 type ResultsListProps = {
   studyId: string;
@@ -17,7 +20,6 @@ type ResultsListProps = {
 const ResultsList = ({ studyId }: ResultsListProps) => {
   const [items, setItems] = React.useState<Result[]>([]);
   const [page, setPage] = React.useState(0);
-  const [results] = React.useState(5);
   const [totalResults, setTotalResults] = React.useState(0);
   const [totalPages, setTotalPages] = React.useState(0);
   const [loading, setLoading] = React.useState(true);
@@ -35,9 +37,7 @@ const ResultsList = ({ studyId }: ResultsListProps) => {
     setLoading(false);
   };
 
-  const webSocket = React.useRef(
-    new WebSocket(`ws://localhost:5000/ws/studyresults?id=${studyId}`)
-  );
+  const webSocket = React.useRef(new WebSocket(`${baseUri}/studyresults?id=${studyId}`));
 
   const startConnection = React.useCallback(() => {
     webSocket.current.onopen = () => {
@@ -47,8 +47,13 @@ const ResultsList = ({ studyId }: ResultsListProps) => {
     };
 
     webSocket.current.onmessage = e => {
-      // a message was received
-      console.log(e.data);
+      const item = JSON.parse(e.data) as Result;
+      console.log(item);
+      setItems(items => {
+        items.pop();
+        return [{ ...item }, ...items];
+      });
+      setTotalResults(totalResults => totalResults + 1);
     };
 
     webSocket.current.onerror = e => {
@@ -85,7 +90,7 @@ const ResultsList = ({ studyId }: ResultsListProps) => {
         <ActivityIndicator />
       ) : (
         items.map(item => (
-          <DataTable.Row>
+          <DataTable.Row key={item.created}>
             <DataTable.Cell>{moment(item.created).format('DD MMM HH:mm')}</DataTable.Cell>
             <DataTable.Cell numeric>{item.stationId}</DataTable.Cell>
             <DataTable.Cell numeric>{item.sensorId}</DataTable.Cell>
@@ -99,7 +104,7 @@ const ResultsList = ({ studyId }: ResultsListProps) => {
         onPageChange={page => setPage(page)}
         label={`${page * results + 1} - ${Math.min(
           page * results + results,
-          items.length
+          totalResults
         )} of ${totalResults}`}
       />
     </DataTable>

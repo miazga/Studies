@@ -59,7 +59,7 @@ namespace Server.Api
             var serviceProvider = serviceScopeFactory.CreateScope().ServiceProvider;
 
             app.UseWebSockets();
-            app.MapWebSocketManager("/ws/studyresults", serviceProvider.GetService<StudyResultsWebSocketHandler>());
+            app.MapWebSocketManager("/api/ws/studyresults", serviceProvider.GetService<StudyResultsWebSocketHandler>());
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             app.UseSwagger();

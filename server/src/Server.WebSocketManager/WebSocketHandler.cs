@@ -31,7 +31,8 @@ namespace Server.WebSocketManager
             if (socket.State != WebSocketState.Open)
                 return;
 
-            await socket.SendAsync(JsonSerializer.SerializeToUtf8Bytes(message),
+            await socket.SendAsync(JsonSerializer.SerializeToUtf8Bytes(message, new JsonSerializerOptions()
+                    {PropertyNamingPolicy = JsonNamingPolicy.CamelCase}),
                 WebSocketMessageType.Text,
                 true,
                 CancellationToken.None);
