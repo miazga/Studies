@@ -17,9 +17,9 @@ namespace Server.Api.Persistence.MongoDb
         }
 
         public static async Task<PagedResult<T>> PaginateAsync<T>(this IFindFluent<T, T> findFluent,
-            int page = 1, int resultsPerPage = 20)
+            int page = 0, int resultsPerPage = 20)
         {
-            if (page <= 0) page = 1;
+            if (page < 0) page = 0;
 
             if (resultsPerPage <= 0) resultsPerPage = 20;
 
@@ -40,11 +40,11 @@ namespace Server.Api.Persistence.MongoDb
         }
 
         public static IFindFluent<T, T> Limit<T>(this IFindFluent<T, T> findFluent,
-            int page = 1, int resultsPerPage = 20)
+            int page = 0, int resultsPerPage = 20)
         {
-            if (page <= 0) page = 1;
+            if (page < 0) page = 0;
             if (resultsPerPage <= 0) resultsPerPage = 20;
-            var skip = (page - 1) * resultsPerPage;
+            var skip = page  * resultsPerPage;
             var data = findFluent.Skip(skip)
                 .Limit(resultsPerPage);
 
@@ -58,9 +58,9 @@ namespace Server.Api.Persistence.MongoDb
         }
 
         public static async Task<PagedResult<T>> PaginateAsync<T>(this IMongoQueryable<T> collection,
-            int page = 1, int resultsPerPage = 20)
+            int page = 0, int resultsPerPage = 20)
         {
-            if (page <= 0) page = 1;
+            if (page < 0) page = 0;
 
             if (resultsPerPage <= 0) resultsPerPage = 20;
 
@@ -81,17 +81,17 @@ namespace Server.Api.Persistence.MongoDb
         }
 
         public static IMongoQueryable<T> Limit<T>(this IMongoQueryable<T> collection,
-            int page = 1, int resultsPerPage = 20)
+            int page = 0, int resultsPerPage = 20)
         {
-            if (page <= 0) page = 1;
+            if (page < 0) page = 0;
             if (resultsPerPage <= 0) resultsPerPage = 20;
-            var skip = (page - 1) * resultsPerPage;
+            var skip = page  * resultsPerPage;
             var data = collection.Skip(skip)
                 .Take(resultsPerPage);
 
             return data;
         }
-        
+
         public static PagedResult<T> Paginate<T>(this IEnumerable<T> collection,
             PagedQueryBase query)
         {
@@ -101,7 +101,7 @@ namespace Server.Api.Persistence.MongoDb
         public static PagedResult<T> Paginate<T>(this IEnumerable<T> collection,
             int page = 1, int resultsPerPage = 20)
         {
-            if (page <= 0) page = 1;
+            if (page < 0) page = 0;
 
             if (resultsPerPage <= 0) resultsPerPage = 20;
 
@@ -114,18 +114,18 @@ namespace Server.Api.Persistence.MongoDb
 
             return PagedResult<T>.Create(data, page, resultsPerPage, totalPages, count);
         }
-        
+
         public static IEnumerable<T> Limit<T>(this IEnumerable<T> collection, PagedQueryBase query)
         {
             return collection.Limit(query.Page, query.Results);
         }
 
         public static IEnumerable<T> Limit<T>(this IEnumerable<T> collection,
-            int page = 1, int resultsPerPage = 20)
+            int page = 0, int resultsPerPage = 20)
         {
-            if (page <= 0) page = 1;
+            if (page < 0) page = 0;
             if (resultsPerPage <= 0) resultsPerPage = 20;
-            var skip = (page - 1) * resultsPerPage;
+            var skip = (page ) * resultsPerPage;
             var data = collection.Skip(skip)
                 .Take(resultsPerPage);
 

@@ -23,14 +23,12 @@ namespace Server.Api.Persistence
 
     public class StudiesRepository : IStudiesRepository
     {
-        protected IMongoCollection<Study> Collection { get; }
-
         public StudiesRepository(IMongoDatabase database, string collectionName)
         {
-            
             Collection = database.GetCollection<Study>(collectionName);
-            
         }
+
+        protected IMongoCollection<Study> Collection { get; }
 
         public async Task<PagedResult<Study>> SearchAsync(StudiesQuery query)
         {
@@ -48,12 +46,13 @@ namespace Server.Api.Persistence
 
             var filter = Builders<Study>.Filter.Regex(study => study.Name,
                 new BsonRegularExpression(searchRegex));
-            
+
             var projection = Builders<Study>.Projection.Exclude(x => x.Results);
 
             Expression<Func<Study, object>> orderPredicate = x => x.Created;
 
-            return await Collection.Find(filter).Project<Study>(projection).SortByDescending(orderPredicate).PaginateAsync(query);
+            return await Collection.Find(filter).Project<Study>(projection).SortByDescending(orderPredicate)
+                .PaginateAsync(query);
         }
 
         public Task AddAsync(Study entity)
@@ -73,7 +72,7 @@ namespace Server.Api.Persistence
         {
             var filter = Builders<Study>.Filter.Eq(x => x.Id, studyId);
             var result = await Collection.Find(filter).Project(x => x.Results).FirstOrDefaultAsync();
-            return  result.OrderByDescending(x => x.DateTime).Paginate(query);
+            return result.OrderByDescending(x => x.Created).Paginate(query);
         }
 
         public async Task UpdateAsync(Guid id, State state, string name)

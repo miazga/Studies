@@ -45,7 +45,7 @@ namespace Server.Api.Controllers
             await _studiesRepository.AddAsync(study);
             return Accepted();
         }
-        
+
         [HttpPut("/api/study/{id}")]
         public async Task<IActionResult> UpdateStudy(Guid id, UpdateStudyCommand command)
         {
@@ -58,13 +58,13 @@ namespace Server.Api.Controllers
         }
 
         [HttpGet("/api/study/{id}/results")]
-        public async Task<IActionResult> GetStudyResults(Guid id,[FromQuery] ResultsQuery query)
+        public async Task<IActionResult> GetStudyResults(Guid id, [FromQuery] ResultsQuery query)
         {
             if (id == Guid.Empty) return BadRequest("Id cannot be empty");
             var result = await _studiesRepository.GetResultsAsync(id, query);
             return Ok(result);
         }
-        
+
         [HttpPut("/api/study/{id}/result")]
         public async Task<IActionResult> AddStudyResult(Guid id, [FromBody] AddResultCommand command)
         {
@@ -77,7 +77,7 @@ namespace Server.Api.Controllers
                 StationId = command.StationId,
                 SensorId = command.SensorId,
                 Value = command.Value,
-                DateTime = DateTimeOffset.FromUnixTimeSeconds(command.Timestamp).DateTime
+                Created = DateTimeOffset.FromUnixTimeSeconds(command.Timestamp).DateTime
             };
 
             await _studiesRepository.AddResultAsync(id, result);

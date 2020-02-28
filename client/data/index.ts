@@ -1,16 +1,18 @@
 import { axios } from '../axios';
 import {
   GetStudiesQuery,
-  GetStudiesQueryResponse,
   AddStudyCommand,
   UpdateStudyCommand,
   AddStudyResultCommand,
   GetStudyResultsQuery,
+  Study,
 } from './models';
+import { QueryResponse } from './models/QueryResponse';
+import { Result } from './models/Result';
 
 // GET /api​/studies
 const getStudies = async (params?: GetStudiesQuery) => {
-  const response = await axios.get<GetStudiesQueryResponse>('studies', { params });
+  const response = await axios.get<QueryResponse<Study>>('studies', { params });
   return response.data;
 };
 
@@ -26,6 +28,11 @@ const addStudyResult = ({ id, stationId, sensorId, value, timestamp }: AddStudyR
   axios.put(`study/${id}/result`, { stationId, sensorId, value, timestamp });
 
 // GET /api/study/{id}/results
-const getStudyResults = ({ id }: GetStudyResultsQuery) => axios.get(`study/${id}/results`);
+const getStudyResults = async ({ id, page, results }: GetStudyResultsQuery) => {
+  const response = await axios.get<QueryResponse<Result>>(`study/${id}/results`, {
+    params: { page, results },
+  });
+  return response.data;
+};
 
-export { getStudies, addStudy, updateStudy, addStudyResult };
+export { getStudies, addStudy, updateStudy, addStudyResult, getStudyResults };
