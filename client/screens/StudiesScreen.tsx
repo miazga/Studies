@@ -5,7 +5,7 @@ import { FAB, List, ActivityIndicator } from 'react-native-paper';
 
 import StudiesListItem from '../components/StudiesListItem';
 import { getStudies } from '../data';
-import { Study } from '../data/models/Study';
+import { Study } from '../data/models';
 import { RootStackParamList } from '../providers/NavigationProvider';
 import BaseScreen from './BaseScreen';
 

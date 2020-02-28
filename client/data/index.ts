@@ -1,8 +1,12 @@
 import { axios } from '../axios';
-import { AddStudyCommand } from './models/AddStudyCommand';
-import { AddStudyResultCommand } from './models/AddStudyResultCommand';
-import { GetStudiesQuery, GetStudiesQueryResponse } from './models/GetStudiesQuery';
-import { UpdateStudyCommand } from './models/UpdateStudyCommand';
+import {
+  GetStudiesQuery,
+  GetStudiesQueryResponse,
+  AddStudyCommand,
+  UpdateStudyCommand,
+  AddStudyResultCommand,
+  GetStudyResultsQuery,
+} from './models';
 
 // GET /api​/studies
 const getStudies = async (params?: GetStudiesQuery) => {
@@ -20,5 +24,8 @@ const updateStudy = ({ id, name, state }: UpdateStudyCommand) =>
 // PUT /api/study/{id}/result
 const addStudyResult = ({ id, stationId, sensorId, value, timestamp }: AddStudyResultCommand) =>
   axios.put(`study/${id}/result`, { stationId, sensorId, value, timestamp });
+
+// GET /api/study/{id}/results
+const getStudyResults = ({ id }: GetStudyResultsQuery) => axios.get(`study/${id}/results`);
 
 export { getStudies, addStudy, updateStudy, addStudyResult };

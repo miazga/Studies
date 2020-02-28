@@ -6,7 +6,7 @@ import { View, StyleSheet } from 'react-native';
 import { Subheading, TextInput, Switch, Button } from 'react-native-paper';
 
 import { updateStudy } from '../data';
-import { StudyState } from '../data/models/StudyState';
+import { StudyState } from '../data/models';
 import { RootStackParamList } from '../providers/NavigationProvider';
 import BaseScreen from './BaseScreen';
 

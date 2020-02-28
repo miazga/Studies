@@ -3,7 +3,7 @@ import moment from 'moment';
 import * as React from 'react';
 import { List, TouchableRipple } from 'react-native-paper';
 
-import { Study } from '../data/models/Study';
+import { Study } from '../data/models';
 
 type StudiesListItemProps = {
   study: Study;
