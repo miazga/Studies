@@ -11,13 +11,13 @@ namespace Server.WebSocketManager
         private readonly RequestDelegate _next;
 
         public Middleware(RequestDelegate next,
-            Handler handler)
+            WebSocketHandler webSocketHandler)
         {
             _next = next;
-            Handler = handler;
+            WebSocketHandler = webSocketHandler;
         }
 
-        private Handler Handler { get; }
+        private WebSocketHandler WebSocketHandler { get; }
 
         public async Task Invoke(HttpContext context)
         {
@@ -25,15 +25,16 @@ namespace Server.WebSocketManager
                 return;
 
             var socket = await context.WebSockets.AcceptWebSocketAsync();
-            Handler.OnConnected(socket);
+            var id = context.Request.Query["id"];
+            WebSocketHandler.OnConnected(id, socket);
 
             await Receive(socket, async (result, buffer) =>
             {
                 if (result.MessageType == WebSocketMessageType.Text)
-                    await Handler.ReceiveAsync(socket, result, buffer);
+                    await WebSocketHandler.ReceiveAsync(socket, result, buffer);
 
                 else if (result.MessageType == WebSocketMessageType.Close)
-                    await Handler.OnDisconnected(socket);
+                    await WebSocketHandler.OnDisconnected(socket);
             });
             await _next.Invoke(context);
         }

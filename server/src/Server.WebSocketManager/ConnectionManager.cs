@@ -7,42 +7,47 @@ using System.Threading.Tasks;
 
 namespace Server.WebSocketManager
 {
+    public class ClientSocket
+    {
+        public string Id { get; set; }
+        public WebSocket WebSocket { get; set; }
+    }
     public class ConnectionManager
     {
-        private readonly ConcurrentDictionary<string, WebSocket> _sockets =
-            new ConcurrentDictionary<string, WebSocket>();
+        private readonly ConcurrentDictionary<string, ClientSocket> _sockets =
+            new ConcurrentDictionary<string, ClientSocket>();
 
-        public WebSocket GetSocketById(string id)
+        public ClientSocket GetSocketById(string id)
         {
             return _sockets.FirstOrDefault(p => p.Key == id).Value;
         }
 
-        public ConcurrentDictionary<string, WebSocket> GetAll()
+        public ConcurrentDictionary<string, ClientSocket> GetAll()
         {
             return _sockets;
         }
 
         public string GetId(WebSocket socket)
         {
-            return _sockets.FirstOrDefault(p => p.Value == socket).Key;
+            return _sockets.FirstOrDefault(p => p.Value.WebSocket == socket).Key;
         }
 
-        public void AddSocket(WebSocket socket)
+        public void AddSocket(string id, WebSocket socket)
         {
-            _sockets.TryAdd(CreateConnectionId(), socket);
+            var clientSocket = new ClientSocket() { Id=id, WebSocket = socket};
+            _sockets.TryAdd(CreateConnectionId(), clientSocket);
         }
 
         public async Task RemoveSocket(string id)
         {
-            WebSocket socket;
-            _sockets.TryRemove(id, out socket);
+            _sockets.TryRemove(id, out var clientSocket);
 
-            await socket.CloseAsync(WebSocketCloseStatus.NormalClosure,
+            await clientSocket.WebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure,
                 "Closed by the ConnectionManager",
                 CancellationToken.None);
         }
 
-        private string CreateConnectionId()
+        private static string CreateConnectionId()
         {
             return Guid.NewGuid().ToString();
         }

@@ -2,6 +2,7 @@ using System;
 
 namespace Server.Api.Models
 {
+    [Serializable]
     public class Result
     {
         public uint StationId { get; set; }

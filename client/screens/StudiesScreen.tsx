@@ -18,7 +18,7 @@ const StudiesScreen = ({ navigation }: StudiesScreenProps) => {
 
   const [items, setItems] = React.useState<Study[]>([]);
   //todo handle pagination
-  const [page, setPage] = React.useState<number>(1);
+  const [page, setPage] = React.useState<number>(0);
   const [loading, setLoading] = React.useState<boolean>(true);
 
   React.useEffect(() => {

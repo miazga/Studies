@@ -14,7 +14,7 @@ namespace Server.WebSocketManager
             var exportedTypes = Assembly.GetEntryAssembly()?.ExportedTypes;
             if (exportedTypes != null)
                 foreach (var type in exportedTypes)
-                    if (type.GetTypeInfo().BaseType == typeof(Handler))
+                    if (type.GetTypeInfo().BaseType == typeof(WebSocketHandler))
                         services.AddSingleton(type);
 
             return services;
@@ -22,9 +22,9 @@ namespace Server.WebSocketManager
 
         public static IApplicationBuilder MapWebSocketManager(this IApplicationBuilder app,
             PathString path,
-            Handler handler)
+            WebSocketHandler webSocketHandler)
         {
-            return app.Map(path, _app => _app.UseMiddleware<Middleware>(handler));
+            return app.Map(path, _app => _app.UseMiddleware<Middleware>(webSocketHandler));
         }
     }
 }

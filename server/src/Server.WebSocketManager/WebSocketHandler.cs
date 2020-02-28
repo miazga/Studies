@@ -1,23 +1,24 @@
 using System;
 using System.Net.WebSockets;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Server.WebSocketManager
 {
-    public abstract class Handler
+    public abstract class WebSocketHandler
     {
-        public Handler(ConnectionManager manager)
+        public WebSocketHandler(ConnectionManager manager)
         {
             Manager = manager;
         }
 
         protected ConnectionManager Manager { get; set; }
 
-        public virtual void OnConnected(WebSocket socket)
+        public virtual void OnConnected(string id, WebSocket socket)
         {
-            Manager.AddSocket(socket);
+            Manager.AddSocket(id, socket);
         }
 
         public virtual async Task OnDisconnected(WebSocket socket)
@@ -25,29 +26,27 @@ namespace Server.WebSocketManager
             await Manager.RemoveSocket(Manager.GetId(socket));
         }
 
-        public async Task SendMessageAsync(WebSocket socket, string message)
+        public async Task SendMessageAsync(WebSocket socket, object message)
         {
             if (socket.State != WebSocketState.Open)
                 return;
 
-            await socket.SendAsync(new ArraySegment<byte>(Encoding.ASCII.GetBytes(message),
-                    0,
-                    message.Length),
+            await socket.SendAsync(JsonSerializer.SerializeToUtf8Bytes(message),
                 WebSocketMessageType.Text,
                 true,
                 CancellationToken.None);
         }
 
-        public async Task SendMessageAsync(string socketId, string message)
+        public async Task SendMessageAsync(string socketId, object message)
         {
-            await SendMessageAsync(Manager.GetSocketById(socketId), message);
+            await SendMessageAsync(Manager.GetSocketById(socketId).WebSocket, message);
         }
 
-        public async Task SendMessageToAllAsync(string message)
+        public async Task SendMessageToAllAsync(string id, object message)
         {
-            foreach (var pair in Manager.GetAll())
-                if (pair.Value.State == WebSocketState.Open)
-                    await SendMessageAsync(pair.Value, message);
+            foreach (var (_, value) in Manager.GetAll())
+                if (value.Id == id && value.WebSocket.State == WebSocketState.Open)
+                    await SendMessageAsync(value.WebSocket, message);
         }
 
         //TODO - decide if exposing the message string is better than exposing the result and buffer

@@ -35,6 +35,44 @@ const ResultsList = ({ studyId }: ResultsListProps) => {
     setLoading(false);
   };
 
+  const webSocket = React.useRef(
+    new WebSocket(`ws://localhost:5000/ws/studyresults?id=${studyId}`)
+  );
+
+  const startConnection = React.useCallback(() => {
+    webSocket.current.onopen = () => {
+      // connection opened
+
+      console.log('connected');
+    };
+
+    webSocket.current.onmessage = e => {
+      // a message was received
+      console.log(e.data);
+    };
+
+    webSocket.current.onerror = e => {
+      // an error occurred
+      console.log(e);
+    };
+
+    webSocket.current.onclose = e => {
+      // connection closed
+      console.log(e.code, e.reason);
+    };
+  }, []);
+
+  const cancelConnection = React.useCallback(() => {
+    webSocket.current.close();
+  }, []);
+
+  React.useEffect(() => {
+    startConnection();
+    return () => {
+      cancelConnection();
+    };
+  }, []);
+
   return (
     <DataTable>
       <DataTable.Header>

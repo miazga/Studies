@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Server.Api.Handlers;
 using Server.Api.Models;
 using Server.Api.Models.Commands;
 using Server.Api.Models.Queries;
 using Server.Api.Persistence;
+
 
 namespace Server.Api.Controllers
 {
@@ -15,11 +17,13 @@ namespace Server.Api.Controllers
     {
         private readonly ILogger<StudiesController> _logger;
         private readonly IStudiesRepository _studiesRepository;
+        private readonly StudyResultsWebSocketHandler _studyResultsWebSocketHandler;
 
-        public StudiesController(ILogger<StudiesController> logger, IStudiesRepository studiesRepository)
+        public StudiesController(ILogger<StudiesController> logger, IStudiesRepository studiesRepository,StudyResultsWebSocketHandler studyResultsWebSocketHandler)
         {
             _logger = logger;
             _studiesRepository = studiesRepository;
+            _studyResultsWebSocketHandler = studyResultsWebSocketHandler;
         }
 
         [HttpGet("/api/studies")]
@@ -81,6 +85,7 @@ namespace Server.Api.Controllers
             };
 
             await _studiesRepository.AddResultAsync(id, result);
+            await _studyResultsWebSocketHandler.SendMessageToAllAsync(id.ToString(),result);
             return Accepted();
         }
     }
