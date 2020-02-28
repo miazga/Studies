@@ -43,17 +43,12 @@ namespace Server.Api.Persistence
 
             var filter = Builders<Study>.Filter.Regex(study => study.Name,
                 new BsonRegularExpression(searchRegex));
-
-
-//            if (!string.IsNullOrWhiteSpace(query.Merchant))
-//                filter &= Builders<Study>.Filter.Eq(x => x.Merchant, query.Merchant);
-//            
-//            if (!string.IsNullOrWhiteSpace(query.ShipsFrom))
-//                filter &= Builders<Study>.Filter.Eq(x => x.ShipsFrom, query.ShipsFrom);
+            
+            var projection = Builders<Study>.Projection.Exclude(x => x.Results);
 
             Expression<Func<Study, object>> orderPredicate = x => x.Created;
 
-            return await _repository.FindAsync(filter, orderPredicate, query);
+            return await _repository.FindAsync(filter, projection, orderPredicate, query);
         }
 
         public Task AddAsync(Study entity)

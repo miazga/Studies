@@ -7,7 +7,7 @@ import NetworkErrorBanner from '../components/NetworkErrorBanner';
 import ResultsScreen from '../screens/ResultsScreen';
 import StudiesScreen from '../screens/StudiesScreen';
 
-type RootStackParamList = {
+export type RootStackParamList = {
   Studies: undefined;
   Results: { study: Study };
 };

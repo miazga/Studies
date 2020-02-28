@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, View, Button } from 'react-native';
-import { List } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
 
 import StudiesList from '../components/StudiesList';
 import { getStudies, addStudy, addStudyResult } from '../data';

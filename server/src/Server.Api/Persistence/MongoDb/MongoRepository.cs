@@ -15,6 +15,7 @@ namespace Server.Api.Persistence.MongoDb
         Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
 
         Task<PagedResult<TEntity>> FindAsync<TQuery>(FilterDefinition<TEntity> filter,
+            ProjectionDefinition<TEntity> projection,
             Expression<Func<TEntity, object>> orderPredicate,
             TQuery query) where TQuery : PagedQueryBase;
 
@@ -55,10 +56,11 @@ namespace Server.Api.Persistence.MongoDb
         }
 
         public async Task<PagedResult<TEntity>> FindAsync<TQuery>(FilterDefinition<TEntity> filter,
+            ProjectionDefinition<TEntity> projection,
             Expression<Func<TEntity, object>> orderPredicate,
             TQuery query) where TQuery : PagedQueryBase
         {
-            return await Collection.Find(filter).SortByDescending(orderPredicate).PaginateAsync(query);
+            return await Collection.Find(filter).Project<TEntity>(projection).SortByDescending(orderPredicate).PaginateAsync(query);
         }
 
         public async Task<PagedResult<TEntity>> BrowseAsync<TQuery>(Expression<Func<TEntity, bool>> predicate,

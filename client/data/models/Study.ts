@@ -1,6 +1,6 @@
 interface Study {
+  id: string;
   name: string;
-  results: any[];
   created: string;
   state: StudyState;
 }
