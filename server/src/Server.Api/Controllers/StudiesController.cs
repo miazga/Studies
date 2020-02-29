@@ -57,16 +57,17 @@ namespace Server.Api.Controllers
             if (command.State == 0) return BadRequest("State cannot be empty");
             if (string.IsNullOrEmpty(command.Name)) return BadRequest("Name cannot be empty");
 
-            await _studiesRepository.UpdateAsync(id, command.State, command.Name);
-            return Accepted();
+            var study = await _studiesRepository.UpdateAsync(id, command.State, command.Name);
+            if (study == null) return BadRequest("Cannot find Study with given Id");
+                return Accepted();
         }
 
         [HttpGet("/api/study/{id}/results")]
         public async Task<IActionResult> GetStudyResults(Guid id, [FromQuery] ResultsQuery query)
         {
             if (id == Guid.Empty) return BadRequest("Id cannot be empty");
-            var result = await _studiesRepository.GetResultsAsync(id, query);
-            return Ok(result);
+            var results = await _studiesRepository.GetResultsAsync(id, query);
+            return Ok(results);
         }
 
         [HttpPut("/api/study/{id}/result")]
@@ -84,9 +85,13 @@ namespace Server.Api.Controllers
                 Created = DateTimeOffset.FromUnixTimeSeconds(command.Timestamp).DateTime
             };
 
-            await _studiesRepository.AddResultAsync(id, result);
+            var study = await _studiesRepository.AddResultAsync(id, result);
+            
+            if (study == null) return BadRequest("Cannot find Study with given Id");
+            
             await _studyResultsWebSocketHandler.SendMessageToAllAsync(id.ToString(),result);
-            return new EmptyResult();
+
+            return Accepted();
         }
     }
 }

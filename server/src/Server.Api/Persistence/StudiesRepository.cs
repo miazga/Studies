@@ -16,8 +16,8 @@ namespace Server.Api.Persistence
     {
         Task<PagedResult<Study>> SearchAsync(StudiesQuery query);
         Task AddAsync(Study entity);
-        Task UpdateAsync(Guid id, State state, string name);
-        Task AddResultAsync(Guid id, Result result);
+        Task<Study> UpdateAsync(Guid id, State state, string name);
+        Task<Study> AddResultAsync(Guid id, Result result);
         Task<PagedResult<Result>> GetResultsAsync(Guid studyId, ResultsQuery query);
     }
 
@@ -60,12 +60,12 @@ namespace Server.Api.Persistence
             return Collection.InsertOneAsync(entity);
         }
 
-        public async Task AddResultAsync(Guid id, Result result)
+        public async Task<Study> AddResultAsync(Guid id, Result result)
         {
             var filterDefinition = Builders<Study>.Filter.Eq(x => x.Id, id);
             var updateDefinition = Builders<Study>.Update.Push(x => x.Results, result);
 
-            await Collection.UpdateOneAsync(filterDefinition, updateDefinition);
+            return await Collection.FindOneAndUpdateAsync(filterDefinition, updateDefinition);
         }
 
         public async Task<PagedResult<Result>> GetResultsAsync(Guid studyId, ResultsQuery query)
@@ -75,12 +75,12 @@ namespace Server.Api.Persistence
             return result.OrderByDescending(x => x.Created).Paginate(query);
         }
 
-        public async Task UpdateAsync(Guid id, State state, string name)
+        public async Task<Study> UpdateAsync(Guid id, State state, string name)
         {
             var filterDefinition = Builders<Study>.Filter.Eq(x => x.Id, id);
             var updateDefinition = Builders<Study>.Update.Set(x => x.Name, name).Set(x => x.State, state);
 
-            await Collection.UpdateOneAsync(filterDefinition, updateDefinition);
+            return await Collection.FindOneAndUpdateAsync(filterDefinition, updateDefinition);
         }
     }
 }
