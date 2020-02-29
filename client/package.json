@@ -6,7 +6,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "serve": "yarn serve web-build"
+    "serve": "yarn serve web-build",
+    "build-web": "./scripts/build-web.sh"
   },
   "dependencies": {
     "@expo/webpack-config": "^0.11.1",
