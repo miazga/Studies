@@ -14,7 +14,8 @@ namespace Server.Api.Handlers
 
         public override Task ReceiveAsync(WebSocket socket, WebSocketReceiveResult result, byte[] buffer)
         {
-            throw new NotImplementedException();
+            // TODO handle
+            return Task.CompletedTask;
         }
     }
 }

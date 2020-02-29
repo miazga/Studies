@@ -49,6 +49,7 @@ namespace Server.Api
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+            else app.UseHsts();
 
             app.UseHttpsRedirection();
             app.UseRouting();

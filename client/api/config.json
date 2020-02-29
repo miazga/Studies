@@ -1,11 +1,11 @@
 {
   "prod": {
-    "host": "localhost",
-    "port": 5100,
-    "protocol": "http:"
+    "host": "studies-pk.herokuapp.com",
+    "port": 443,
+    "protocol": "https:"
   },
   "dev": {
-    "host": "0.0.0.0",
+    "host": "localhost",
     "port": 5100,
     "protocol": "http:"
   }

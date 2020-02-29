@@ -86,7 +86,7 @@ namespace Server.Api.Controllers
 
             await _studiesRepository.AddResultAsync(id, result);
             await _studyResultsWebSocketHandler.SendMessageToAllAsync(id.ToString(),result);
-            return Accepted();
+            return new EmptyResult();
         }
     }
 }

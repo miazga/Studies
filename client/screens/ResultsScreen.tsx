@@ -43,10 +43,9 @@ const ResultsList = ({ studyId }: ResultsListProps) => {
   const startConnection = React.useCallback(() => {
     webSocket.current.onmessage = e => {
       const item = JSON.parse(e.data) as Result;
-      console.log(item);
       setItems(items => {
         items.pop();
-        return [{ ...item }, ...items];
+        return [item, ...items];
       });
       setTotalResults(totalResults => totalResults + 1);
     };
