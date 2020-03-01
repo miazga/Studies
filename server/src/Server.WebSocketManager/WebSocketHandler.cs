@@ -1,6 +1,4 @@
-using System;
 using System.Net.WebSockets;
-using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,8 +29,9 @@ namespace Server.WebSocketManager
             if (socket.State != WebSocketState.Open)
                 return;
 
-            await socket.SendAsync(JsonSerializer.SerializeToUtf8Bytes(message, new JsonSerializerOptions()
-                    {PropertyNamingPolicy = JsonNamingPolicy.CamelCase}),
+            await socket.SendAsync(
+                JsonSerializer.SerializeToUtf8Bytes(message,
+                    new JsonSerializerOptions {PropertyNamingPolicy = JsonNamingPolicy.CamelCase}),
                 WebSocketMessageType.Text,
                 true,
                 CancellationToken.None);

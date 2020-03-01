@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 using Server.Api.Handlers;
 using Server.Api.Persistence.MongoDb;
 using Server.WebSocketManager;
@@ -49,16 +51,22 @@ namespace Server.Api
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
-            else app.UseHsts();
+            app.UseHsts();
             
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = "api";
+            });
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
-            
-            app.UseWebSockets();
+
             var serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
             var serviceProvider = serviceScopeFactory.CreateScope().ServiceProvider;
 
@@ -66,12 +74,6 @@ namespace Server.Api
             app.MapWebSocketManager("/api/ws/studyresults", serviceProvider.GetService<StudyResultsWebSocketHandler>());
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-                c.RoutePrefix = "api";
-            });
         }
     }
 }

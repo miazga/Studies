@@ -9,31 +9,32 @@ using Server.Api.Models.Commands;
 using Server.Api.Models.Queries;
 using Server.Api.Persistence;
 
-
 namespace Server.Api.Controllers
 {
     [ApiController]
+    [Route("/api")]
     public class StudiesController : ControllerBase
     {
         private readonly ILogger<StudiesController> _logger;
         private readonly IStudiesRepository _studiesRepository;
         private readonly StudyResultsWebSocketHandler _studyResultsWebSocketHandler;
 
-        public StudiesController(ILogger<StudiesController> logger, IStudiesRepository studiesRepository,StudyResultsWebSocketHandler studyResultsWebSocketHandler)
+        public StudiesController(ILogger<StudiesController> logger, IStudiesRepository studiesRepository,
+            StudyResultsWebSocketHandler studyResultsWebSocketHandler)
         {
             _logger = logger;
             _studiesRepository = studiesRepository;
             _studyResultsWebSocketHandler = studyResultsWebSocketHandler;
         }
 
-        [HttpGet("/api/studies")]
+        [HttpGet("studies")]
         public async Task<IActionResult> Get([FromQuery] StudiesQuery query)
         {
             var result = await _studiesRepository.SearchAsync(query);
             return Ok(result);
         }
 
-        [HttpPost("/api/study")]
+        [HttpPost("study")]
         public async Task<IActionResult> AddStudy(AddStudyCommand command)
         {
             if (string.IsNullOrEmpty(command.Name)) return BadRequest("Name cannot be empty");
@@ -50,7 +51,7 @@ namespace Server.Api.Controllers
             return Accepted();
         }
 
-        [HttpPut("/api/study/{id}")]
+        [HttpPut("study/{id}")]
         public async Task<IActionResult> UpdateStudy(Guid id, UpdateStudyCommand command)
         {
             if (id == Guid.Empty) return BadRequest("Id cannot be empty");
@@ -59,10 +60,10 @@ namespace Server.Api.Controllers
 
             var study = await _studiesRepository.UpdateAsync(id, command.State, command.Name);
             if (study == null) return BadRequest("Cannot find Study with given Id");
-                return Accepted();
+            return Accepted();
         }
 
-        [HttpGet("/api/study/{id}/results")]
+        [HttpGet("study/{id}/results")]
         public async Task<IActionResult> GetStudyResults(Guid id, [FromQuery] ResultsQuery query)
         {
             if (id == Guid.Empty) return BadRequest("Id cannot be empty");
@@ -70,7 +71,7 @@ namespace Server.Api.Controllers
             return Ok(results);
         }
 
-        [HttpPut("/api/study/{id}/result")]
+        [HttpPut("study/{id}/result")]
         public async Task<IActionResult> AddStudyResult(Guid id, [FromBody] AddResultCommand command)
         {
             if (command == null || id == Guid.Empty || command.StationId == 0 || command.SensorId == 0 ||
@@ -86,10 +87,10 @@ namespace Server.Api.Controllers
             };
 
             var study = await _studiesRepository.AddResultAsync(id, result);
-            
+
             if (study == null) return BadRequest("Cannot find Study with given Id");
-            
-            await _studyResultsWebSocketHandler.SendMessageToAllAsync(id.ToString(),result);
+
+            await _studyResultsWebSocketHandler.SendMessageToAllAsync(id.ToString(), result);
 
             return Accepted();
         }
