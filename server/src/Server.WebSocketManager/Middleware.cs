@@ -26,7 +26,8 @@ namespace Server.WebSocketManager
 
             var socket = await context.WebSockets.AcceptWebSocketAsync();
             var id = context.Request.Query["id"];
-            WebSocketHandler.OnConnected(id, socket);
+            var stationId = context.Request.Query["stationId"];
+            WebSocketHandler.OnConnected(id, stationId, socket);
 
             await Receive(socket, async (result, buffer) =>
             {

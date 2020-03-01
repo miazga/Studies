@@ -74,6 +74,8 @@ namespace Server.Api.Persistence
         {
             var filter = Builders<Study>.Filter.Eq(x => x.Id, studyId);
             var result = await Collection.Find(filter).Project(x => x.Results).FirstOrDefaultAsync();
+            if (query.StationId != 0)
+                return result.Where(x => x.StationId == query.StationId).OrderByDescending(x => x.Created).Paginate(query);
             return result.OrderByDescending(x => x.Created).Paginate(query);
         }
 

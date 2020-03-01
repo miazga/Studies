@@ -10,6 +10,7 @@ namespace Server.WebSocketManager
     public class ClientSocket
     {
         public string Id { get; set; }
+        public string StationId { get; set; }
         public WebSocket WebSocket { get; set; }
     }
 
@@ -33,9 +34,9 @@ namespace Server.WebSocketManager
             return _sockets.FirstOrDefault(p => p.Value.WebSocket == socket).Key;
         }
 
-        public void AddSocket(string id, WebSocket socket)
+        public void AddSocket(string id, string stationId, WebSocket socket)
         {
-            var clientSocket = new ClientSocket {Id = id, WebSocket = socket};
+            var clientSocket = new ClientSocket {Id = id, StationId = stationId, WebSocket = socket};
             _sockets.TryAdd(CreateConnectionId(), clientSocket);
         }
 

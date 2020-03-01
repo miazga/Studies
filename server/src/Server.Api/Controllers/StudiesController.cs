@@ -94,7 +94,7 @@ namespace Server.Api.Controllers
 
             if (study == null) return BadRequest("Cannot find Study with given Id");
 
-            await _studyResultsWebSocketHandler.SendMessageToAllAsync(id.ToString(), result);
+            await _studyResultsWebSocketHandler.SendMessageToAllAsync(id.ToString(), command.StationId.ToString(), result);
 
             return Accepted();
         }

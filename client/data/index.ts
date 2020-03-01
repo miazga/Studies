@@ -29,9 +29,9 @@ const addStudyResult = ({ id, stationId, sensorId, value, timestamp }: AddStudyR
   axios.put(`study/${id}/result`, { stationId, sensorId, value, timestamp });
 
 // GET /api/study/{id}/results
-const getStudyResults = async ({ id, page, results }: GetStudyResultsQuery) => {
+const getStudyResults = async ({ id, page, results, stationId }: GetStudyResultsQuery) => {
   const response = await axios.get<QueryResponse<Result>>(`study/${id}/results`, {
-    params: { page, results },
+    params: { page, results, stationId },
   });
   return response.data;
 };

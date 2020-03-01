@@ -40,7 +40,6 @@ const ResultsList = ({ studyId }: ResultsListProps) => {
   // websockets doesnt work on web due to usecure connection - SSL/TLS setup required on server side
   if (Platform.OS !== 'web') {
     const webSocket = React.useRef(new WebSocket(`${baseUri}/studyresults?id=${studyId}`));
-    // const webSocket = React.useRef({ current: {} });
 
     const startConnection = React.useCallback(() => {
       webSocket.current.onmessage = e => {

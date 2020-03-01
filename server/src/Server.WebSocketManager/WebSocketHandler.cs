@@ -14,9 +14,9 @@ namespace Server.WebSocketManager
 
         protected ConnectionManager Manager { get; set; }
 
-        public virtual void OnConnected(string id, WebSocket socket)
+        public virtual void OnConnected(string id, string stationId, WebSocket socket)
         {
-            Manager.AddSocket(id, socket);
+            Manager.AddSocket(id, stationId, socket);
         }
 
         public virtual async Task OnDisconnected(WebSocket socket)
@@ -42,10 +42,10 @@ namespace Server.WebSocketManager
             await SendMessageAsync(Manager.GetSocketById(socketId).WebSocket, message);
         }
 
-        public async Task SendMessageToAllAsync(string id, object message)
+        public async Task SendMessageToAllAsync(string id, string stationId, object message)
         {
             foreach (var (_, value) in Manager.GetAll())
-                if (value.Id == id && value.WebSocket.State == WebSocketState.Open)
+                if (value.Id == id && value.StationId == stationId && value.WebSocket.State == WebSocketState.Open)
                     await SendMessageAsync(value.WebSocket, message);
         }
 
