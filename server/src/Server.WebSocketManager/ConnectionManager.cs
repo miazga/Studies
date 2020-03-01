@@ -12,6 +12,7 @@ namespace Server.WebSocketManager
         public string Id { get; set; }
         public WebSocket WebSocket { get; set; }
     }
+
     public class ConnectionManager
     {
         private readonly ConcurrentDictionary<string, ClientSocket> _sockets =
@@ -34,7 +35,7 @@ namespace Server.WebSocketManager
 
         public void AddSocket(string id, WebSocket socket)
         {
-            var clientSocket = new ClientSocket() { Id=id, WebSocket = socket};
+            var clientSocket = new ClientSocket {Id = id, WebSocket = socket};
             _sockets.TryAdd(CreateConnectionId(), clientSocket);
         }
 

@@ -44,7 +44,7 @@ namespace Server.Api.Persistence.MongoDb
         {
             if (page < 0) page = 0;
             if (resultsPerPage <= 0) resultsPerPage = 20;
-            var skip = page  * resultsPerPage;
+            var skip = page * resultsPerPage;
             var data = findFluent.Skip(skip)
                 .Limit(resultsPerPage);
 
@@ -85,7 +85,7 @@ namespace Server.Api.Persistence.MongoDb
         {
             if (page < 0) page = 0;
             if (resultsPerPage <= 0) resultsPerPage = 20;
-            var skip = page  * resultsPerPage;
+            var skip = page * resultsPerPage;
             var data = collection.Skip(skip)
                 .Take(resultsPerPage);
 
@@ -125,7 +125,7 @@ namespace Server.Api.Persistence.MongoDb
         {
             if (page < 0) page = 0;
             if (resultsPerPage <= 0) resultsPerPage = 20;
-            var skip = (page ) * resultsPerPage;
+            var skip = page * resultsPerPage;
             var data = collection.Skip(skip)
                 .Take(resultsPerPage);
 
