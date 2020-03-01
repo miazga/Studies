@@ -2,7 +2,7 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import moment from 'moment';
 import * as React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { Subheading, DataTable, ActivityIndicator } from 'react-native-paper';
 
 import { getStudyResults } from '../data';
@@ -37,30 +37,33 @@ const ResultsList = ({ studyId }: ResultsListProps) => {
     setLoading(false);
   };
 
-  const webSocket = React.useRef(new WebSocket(`${baseUri}/studyresults?id=${studyId}`));
-  // const webSocket = React.useRef({ current: {} });
+  // websockets doesnt work on web due to usecure connection - SSL/TLS setup required on server side
+  if (Platform.OS !== 'web') {
+    const webSocket = React.useRef(new WebSocket(`${baseUri}/studyresults?id=${studyId}`));
+    // const webSocket = React.useRef({ current: {} });
 
-  const startConnection = React.useCallback(() => {
-    webSocket.current.onmessage = e => {
-      const item = JSON.parse(e.data) as Result;
-      setItems(items => {
-        items.pop();
-        return [item, ...items];
-      });
-      setTotalResults(totalResults => totalResults + 1);
-    };
-  }, []);
+    const startConnection = React.useCallback(() => {
+      webSocket.current.onmessage = e => {
+        const item = JSON.parse(e.data) as Result;
+        setItems(items => {
+          items.pop();
+          return [item, ...items];
+        });
+        setTotalResults(totalResults => totalResults + 1);
+      };
+    }, []);
 
-  const cancelConnection = React.useCallback(() => {
-    webSocket.current.close();
-  }, []);
+    const cancelConnection = React.useCallback(() => {
+      webSocket.current.close();
+    }, []);
 
-  React.useEffect(() => {
-    startConnection();
-    return () => {
-      cancelConnection();
-    };
-  }, []);
+    React.useEffect(() => {
+      startConnection();
+      return () => {
+        cancelConnection();
+      };
+    }, []);
+  }
 
   return (
     <DataTable>
