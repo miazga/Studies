@@ -12,6 +12,7 @@
   "dependencies": {
     "@expo/webpack-config": "^0.11.1",
     "@react-native-community/masked-view": "0.1.5",
+    "@react-navigation/material-top-tabs": "^5.1.0",
     "@react-navigation/native": "^5.0.8",
     "@react-navigation/stack": "^5.1.0",
     "axios": "^0.19.2",
@@ -26,6 +27,8 @@
     "react-native-reanimated": "~1.4.0",
     "react-native-safe-area-context": "0.6.0",
     "react-native-screens": "2.0.0-alpha.12",
+    "react-native-sideswipe": "^1.5.0",
+    "react-native-tab-view": "^2.13.0",
     "react-native-web": "~0.11.7"
   },
   "devDependencies": {

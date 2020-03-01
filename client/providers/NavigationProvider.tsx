@@ -8,12 +8,14 @@ import AddStudyScreen from '../screens/AddStudyScreen';
 import ModifyStudyScreen from '../screens/ModifyStudyScreen';
 import ResultsScreen from '../screens/ResultsScreen';
 import StudiesScreen from '../screens/StudiesScreen';
+import StudyDetailsScreen from '../screens/StudyDetailsScreen';
 
 export type RootStackParamList = {
   Studies: undefined;
   Results: { study: Study };
   ModifyStudy: { study: Study; onSubmit: () => Promise<void> };
   AddStudy: { onSubmit: () => Promise<void> };
+  StudyDetails: { study: Study };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -49,6 +51,13 @@ const NavigationProvider = ({ theme }) => (
           title: `Add a new study`,
         })}
         component={AddStudyScreen}
+      />
+      <Stack.Screen
+        name="StudyDetails"
+        options={({ route }) => ({
+          title: `${route.params.study.name} details`,
+        })}
+        component={StudyDetailsScreen}
       />
     </Stack.Navigator>
   </NavigationContainer>

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
@@ -19,6 +20,7 @@ namespace Server.Api.Persistence
         Task<Study> UpdateAsync(Guid id, State state, string name);
         Task<Study> AddResultAsync(Guid id, Result result);
         Task<PagedResult<Result>> GetResultsAsync(Guid studyId, ResultsQuery query);
+        Task<ImmutableHashSet<uint>> GetStationsAsync(Guid studyId);
     }
 
     public class StudiesRepository : IStudiesRepository
@@ -73,6 +75,13 @@ namespace Server.Api.Persistence
             var filter = Builders<Study>.Filter.Eq(x => x.Id, studyId);
             var result = await Collection.Find(filter).Project(x => x.Results).FirstOrDefaultAsync();
             return result.OrderByDescending(x => x.Created).Paginate(query);
+        }
+
+        public async Task<ImmutableHashSet<uint>> GetStationsAsync(Guid studyId)
+        {
+            var filter = Builders<Study>.Filter.Eq(x => x.Id, studyId);
+            var result = await Collection.Find(filter).Project(x => x.Results).FirstOrDefaultAsync();
+            return result.Select(x => x.StationId).ToImmutableHashSet();
         }
 
         public async Task<Study> UpdateAsync(Guid id, State state, string name)

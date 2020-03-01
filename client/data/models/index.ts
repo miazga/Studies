@@ -2,6 +2,7 @@ export * from './AddStudyCommand';
 export * from './AddStudyResultCommand';
 export * from './GetStudiesQuery';
 export * from './GetStudyResultsQuery';
+export * from './GetStudyStationsQuery';
 export * from './Study';
 export * from './Result';
 export * from './StudyState';

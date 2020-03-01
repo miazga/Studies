@@ -7,6 +7,7 @@ import {
   GetStudyResultsQuery,
   Study,
 } from './models';
+import { GetStudyStationsQuery } from './models/GetStudyStationsQuery';
 import { QueryResponse } from './models/QueryResponse';
 import { Result } from './models/Result';
 
@@ -35,4 +36,10 @@ const getStudyResults = async ({ id, page, results }: GetStudyResultsQuery) => {
   return response.data;
 };
 
-export { getStudies, addStudy, updateStudy, addStudyResult, getStudyResults };
+// GET /api/study/{id}/stations
+const getStudyStations = async ({ id }: GetStudyStationsQuery) => {
+  const response = await axios.get<number[]>(`study/${id}/stations`);
+  return response.data;
+};
+
+export { getStudies, addStudy, updateStudy, addStudyResult, getStudyResults, getStudyStations };
