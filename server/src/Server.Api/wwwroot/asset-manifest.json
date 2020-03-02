@@ -1,10 +1,10 @@
 {
-  "app.js": "/static/js/app.d203b2af.chunk.js",
-  "app.ff969c8232c4d93c4cc7.map": "/ff969c8232c4d93c4cc7.map",
+  "app.js": "/static/js/app.cc954e20.chunk.js",
+  "app.fae94c331f7b30a7c74c.map": "/fae94c331f7b30a7c74c.map",
   "runtime~app.js": "/static/js/runtime~app.1f3c3aae.js",
   "runtime~app.e8b56e0b6f3053ff6199.map": "/e8b56e0b6f3053ff6199.map",
-  "static/js/2.5c889df1.chunk.js": "/static/js/2.5c889df1.chunk.js",
-  "8fbda1cfa71bfa3afd0c.map": "/8fbda1cfa71bfa3afd0c.map",
+  "static/js/2.1bf2bb66.chunk.js": "/static/js/2.1bf2bb66.chunk.js",
+  "86fe4af573e1773a360c.map": "/86fe4af573e1773a360c.map",
   "fonts/AntDesign.ttf": "/./fonts/AntDesign.ttf",
   "fonts/Entypo.ttf": "/./fonts/Entypo.ttf",
   "./fonts/Feather.ttf": "/./fonts/Feather.ttf",
@@ -36,10 +36,10 @@
   "favicon.ico": "/favicon.ico",
   "index.html": "/index.html",
   "manifest.json": "/manifest.json",
-  "precache-manifest.4f4a5104df78b223175e69dea29da2a7.js": "/precache-manifest.4f4a5104df78b223175e69dea29da2a7.js",
+  "precache-manifest.21c89740c1208749a978a90a2b7ee9b4.js": "/precache-manifest.21c89740c1208749a978a90a2b7ee9b4.js",
   "serve.json": "/serve.json",
   "service-worker.js": "/service-worker.js",
-  "static/js/2.5c889df1.chunk.js.gz": "/static/js/2.5c889df1.chunk.js.gz",
-  "static/js/app.d203b2af.chunk.js.gz": "/static/js/app.d203b2af.chunk.js.gz",
+  "static/js/2.1bf2bb66.chunk.js.gz": "/static/js/2.1bf2bb66.chunk.js.gz",
+  "static/js/app.cc954e20.chunk.js.gz": "/static/js/app.cc954e20.chunk.js.gz",
   "static/js/runtime~app.1f3c3aae.js.gz": "/static/js/runtime~app.1f3c3aae.js.gz"
 }

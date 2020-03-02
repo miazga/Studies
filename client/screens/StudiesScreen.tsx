@@ -1,13 +1,19 @@
 import { StackNavigationProp } from '@react-navigation/stack';
+import { Linking } from 'expo';
 import * as React from 'react';
 import { StyleSheet } from 'react-native';
-import { FAB, List, ActivityIndicator } from 'react-native-paper';
+import { FAB, List, ActivityIndicator, Button, IconButton } from 'react-native-paper';
 
+import api from '../api/config.json';
 import StudiesListItem from '../components/StudiesListItem';
 import { getStudies } from '../data';
 import { Study } from '../data/models';
 import { RootStackParamList } from '../providers/NavigationProvider';
 import BaseScreen from './BaseScreen';
+
+const baseUrl = __DEV__
+  ? `${api.dev.protocol}//${api.dev.host}:${api.dev.port}`
+  : `${api.prod.protocol}//${api.prod.host}:${api.prod.port}`;
 
 type StudiesScreenProps = {
   navigation: StackNavigationProp<RootStackParamList>;
@@ -39,6 +45,19 @@ const StudiesScreen = ({ navigation }: StudiesScreenProps) => {
   const handleRefreshPress = () => {
     // todo handle refresh
   };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <IconButton
+          icon="professional-hexagon"
+          size={20}
+          color="white"
+          onPress={() => Linking.openURL(`${baseUrl}/docs`)}
+        />
+      ),
+    });
+  }, []);
 
   return (
     <BaseScreen>
