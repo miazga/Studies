@@ -18,8 +18,6 @@ import { getStudyResults, getStudyStationSensors } from '../data';
 import { Result } from '../data/models';
 import baseUri from '../websocket';
 
-const data = [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80];
-
 const itemsPerPage = 5;
 
 type StationDetailsProps = {
@@ -91,8 +89,6 @@ const StationDetails = ({ studyId, stationId }: StationDetailsProps) => {
     }, []);
   }
 
-  const data = [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80];
-
   const handleChangeFilter = (sensorId: number) => {
     setSensorId(sensorId);
     setFilterVisible(false);
@@ -116,7 +112,9 @@ const StationDetails = ({ studyId, stationId }: StationDetailsProps) => {
       </Menu>
       <LineChart
         style={{ height: 200 }}
-        data={data}
+        data={results}
+        yAccessor={item => item.value}
+        xAccessor={item => item.created}
         svg={{ stroke: 'rgb(134, 65, 244)' }}
         contentInset={{ top: 20, bottom: 20 }}>
         <Grid />

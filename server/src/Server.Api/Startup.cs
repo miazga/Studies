@@ -1,4 +1,3 @@
-using System;
 using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -9,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using MongoDB.Driver;
 using Server.Api.Handlers;
 using Server.Api.Persistence.MongoDb;
 using Server.WebSocketManager;
@@ -52,7 +50,7 @@ namespace Server.Api
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
             app.UseHsts();
-            
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

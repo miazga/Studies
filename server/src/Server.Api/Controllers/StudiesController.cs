@@ -74,7 +74,6 @@ namespace Server.Api.Controllers
         [HttpPut("study/{id}/result")]
         public async Task<IActionResult> AddStudyResult(Guid id, [FromBody] AddResultCommand command)
         {
-            
             if (command == null)
                 return BadRequest("Id cannot be empty");
             if (id == Guid.Empty) return BadRequest("Id cannot be empty");
@@ -94,7 +93,8 @@ namespace Server.Api.Controllers
 
             if (study == null) return BadRequest("Cannot find Study with given Id");
 
-            await _studyResultsWebSocketHandler.SendMessageToAllAsync(id.ToString(), command.StationId.ToString(), result);
+            await _studyResultsWebSocketHandler.SendMessageToAllAsync(id.ToString(), command.StationId.ToString(),
+                result);
 
             return Accepted();
         }
@@ -106,7 +106,7 @@ namespace Server.Api.Controllers
             var stations = await _repository.GetStationsAsync(id);
             return Ok(stations);
         }
-        
+
         [HttpGet("study/{id}/station/{stationId}/sensors")]
         public async Task<IActionResult> GetStudyStationSensors(Guid id, uint stationId)
         {
