@@ -1,3 +1,4 @@
+import { Theme } from '@react-navigation/native/lib/typescript/src/types';
 import moment from 'moment';
 import * as React from 'react';
 import { Platform } from 'react-native';
@@ -11,6 +12,7 @@ import {
   Menu,
   Button,
   Divider,
+  withTheme,
 } from 'react-native-paper';
 import { LineChart, Grid } from 'react-native-svg-charts';
 
@@ -23,9 +25,10 @@ const itemsPerPage = 5;
 type StationDetailsProps = {
   studyId: string;
   stationId: number;
+  theme: Theme;
 };
 
-const StationDetails = ({ studyId, stationId }: StationDetailsProps) => {
+const StationDetails = ({ studyId, stationId, theme }: StationDetailsProps) => {
   const [filterVisible, setFilterVisible] = React.useState(false);
   const [sensorId, setSensorId] = React.useState(0);
   const [results, setResults] = React.useState<Result[]>([]);
@@ -107,15 +110,15 @@ const StationDetails = ({ studyId, stationId }: StationDetailsProps) => {
         <Menu.Item onPress={() => handleChangeFilter(0)} title="All sensors" />
         <Divider />
         {sensors.map(item => (
-          <Menu.Item onPress={() => handleChangeFilter(item)} title={`Sensor ${item}`} />
+          <Menu.Item key={item} onPress={() => handleChangeFilter(item)} title={`Sensor ${item}`} />
         ))}
       </Menu>
       <LineChart
         style={{ height: 200 }}
         data={results}
-        yAccessor={item => item.value}
-        xAccessor={item => item.created}
-        svg={{ stroke: 'rgb(134, 65, 244)' }}
+        yAccessor={({ item }) => item.value}
+        xAccessor={({ item }) => moment(item.created)}
+        svg={{ stroke: theme.colors.primary }}
         contentInset={{ top: 20, bottom: 20 }}>
         <Grid />
       </LineChart>
@@ -150,4 +153,4 @@ const StationDetails = ({ studyId, stationId }: StationDetailsProps) => {
   );
 };
 
-export default StationDetails;
+export default withTheme(StationDetails);
