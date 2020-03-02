@@ -52,7 +52,7 @@ const StudiesScreen = ({ navigation }: StudiesScreenProps) => {
           icon="professional-hexagon"
           size={20}
           color="white"
-          onPress={() => Linking.openURL(`${baseUrl}/docs`)}
+          onPress={() => Linking.openURL(`${baseUrl}/index.html`)}
         />
       ),
     });
