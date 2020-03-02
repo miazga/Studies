@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as React from 'react';
-import { IconButton } from 'react-native-paper';
+import { IconButton, ActivityIndicator } from 'react-native-paper';
 
 import StationsView from '../components/StationsView';
 import { getStudyStations } from '../data';
@@ -17,6 +17,8 @@ const ResultsScreen = ({ route, navigation }: ResultsScreenProps) => {
   const { study } = route.params;
 
   const [stations, setStations] = React.useState<number[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
   React.useEffect(() => {
     getStations();
   }, []);
@@ -24,6 +26,7 @@ const ResultsScreen = ({ route, navigation }: ResultsScreenProps) => {
   const getStations = async () => {
     const result = await getStudyStations({ id: study.id });
     setStations(result);
+    setLoading(false);
   };
 
   React.useLayoutEffect(() => {
@@ -41,7 +44,11 @@ const ResultsScreen = ({ route, navigation }: ResultsScreenProps) => {
 
   return (
     <BaseScreen>
-      {stations.length > 0 && <StationsView stations={stations} studyId={study.id} />}
+      {loading ? (
+        <ActivityIndicator />
+      ) : (
+        stations.length > 0 && <StationsView stations={stations} studyId={study.id} />
+      )}
     </BaseScreen>
   );
 };

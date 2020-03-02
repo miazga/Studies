@@ -13,7 +13,7 @@ const Tab = createMaterialTopTabNavigator();
 const StationsView = ({ stations, studyId }: StationsViewProps) => (
   <Tab.Navigator lazy>
     {stations.map(item => (
-      <Tab.Screen name={`Station ${item}`}>
+      <Tab.Screen key={item} name={`Station ${item}`}>
         {props => <StationDetails {...props} studyId={studyId} stationId={item} />}
       </Tab.Screen>
     ))}
