@@ -1,8 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Linking } from 'expo';
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
-import { FAB, List, ActivityIndicator, Button, IconButton } from 'react-native-paper';
+import { FAB, List, ActivityIndicator, IconButton, Portal } from 'react-native-paper';
 
 import api from '../api/config.json';
 import StudiesListItem from '../components/StudiesListItem';
@@ -67,22 +66,20 @@ const StudiesScreen = ({ navigation }: StudiesScreenProps) => {
           <StudiesListItem key={item.created} study={item} onEditSubmit={loadData} />
         ))}
       </List.Section>
-      <FAB.Group
-        open={fabOpened}
-        visible
-        icon={fabOpened ? 'close' : 'plus'}
-        actions={[
-          { icon: 'plus', label: 'Add new', onPress: handleAddNewPress },
-          { icon: 'refresh', label: 'Refresh list', onPress: handleRefreshPress },
-        ]}
-        onStateChange={({ open }) => setFabOpened(open)}
-      />
+      <Portal>
+        <FAB.Group
+          open={fabOpened}
+          visible
+          icon={fabOpened ? 'close' : 'plus'}
+          actions={[
+            { icon: 'plus', label: 'Add new', onPress: handleAddNewPress },
+            { icon: 'refresh', label: 'Refresh list', onPress: handleRefreshPress },
+          ]}
+          onStateChange={({ open }) => setFabOpened(open)}
+        />
+      </Portal>
     </BaseScreen>
   );
 };
-
-const styles = StyleSheet.create({
-  fab: {},
-});
 
 export default StudiesScreen;
