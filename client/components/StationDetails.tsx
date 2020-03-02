@@ -66,7 +66,7 @@ const StationDetails = ({ studyId, stationId }: StationDetailsProps) => {
 
   return (
     <ScrollView>
-      {/* <Chart /> */}
+      <Chart />
       <DataTable>
         <DataTable.Header>
           <DataTable.Title>Created</DataTable.Title>
