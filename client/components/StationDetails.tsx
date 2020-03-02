@@ -3,10 +3,13 @@ import * as React from 'react';
 import { Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Surface, Text, DataTable, ActivityIndicator } from 'react-native-paper';
+import { LineChart, Grid } from 'react-native-svg-charts';
 
 import { getStudyResults } from '../data';
 import { Result } from '../data/models';
 import baseUri from '../websocket';
+
+const data = [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80];
 
 const itemsPerPage = 5;
 
@@ -63,6 +66,13 @@ const StationDetails = ({ studyId, stationId }: StationDetailsProps) => {
 
   return (
     <ScrollView>
+      <LineChart
+        style={{ height: 200 }}
+        data={data}
+        svg={{ stroke: 'rgb(134, 65, 244)' }}
+        contentInset={{ top: 20, bottom: 20 }}>
+        <Grid />
+      </LineChart>
       <DataTable>
         <DataTable.Header>
           <DataTable.Title>Created</DataTable.Title>
