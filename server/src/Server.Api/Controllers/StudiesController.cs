@@ -106,5 +106,14 @@ namespace Server.Api.Controllers
             var stations = await _repository.GetStationsAsync(id);
             return Ok(stations);
         }
+        
+        [HttpGet("study/{id}/station/{stationId}/sensors")]
+        public async Task<IActionResult> GetStudyStationSensors(Guid id, uint stationId)
+        {
+            if (id == Guid.Empty) return BadRequest("Id cannot be empty");
+            if (stationId <= 0) return BadRequest("StationId cannot be negative");
+            var stations = await _repository.GetStationSensorsAsync(id, stationId);
+            return Ok(stations);
+        }
     }
 }

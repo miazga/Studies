@@ -3,6 +3,7 @@ export * from './AddStudyResultCommand';
 export * from './GetStudiesQuery';
 export * from './GetStudyResultsQuery';
 export * from './GetStudyStationsQuery';
+export * from './GetStudyStationSensorsQuery';
 export * from './Study';
 export * from './Result';
 export * from './StudyState';

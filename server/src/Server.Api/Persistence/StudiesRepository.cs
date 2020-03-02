@@ -21,6 +21,7 @@ namespace Server.Api.Persistence
         Task<Study> AddResultAsync(Guid id, Result result);
         Task<PagedResult<Result>> GetResultsAsync(Guid studyId, ResultsQuery query);
         Task<ImmutableHashSet<uint>> GetStationsAsync(Guid studyId);
+        Task<ImmutableHashSet<uint>> GetStationSensorsAsync(Guid studyId, uint stationId);
     }
 
     public class StudiesRepository : IStudiesRepository
@@ -74,8 +75,18 @@ namespace Server.Api.Persistence
         {
             var filter = Builders<Study>.Filter.Eq(x => x.Id, studyId);
             var result = await Collection.Find(filter).Project(x => x.Results).FirstOrDefaultAsync();
+            
+            if (query.StationId != 0 && query.SensorId !=0)
+            {
+                return result.Where(x => x.StationId == query.StationId && x.SensorId == query.SensorId).OrderByDescending(x => x.Created)
+                    .Paginate(query);
+            }
+            
             if (query.StationId != 0)
-                return result.Where(x => x.StationId == query.StationId).OrderByDescending(x => x.Created).Paginate(query);
+            {
+                return result.Where(x => x.StationId == query.StationId).OrderByDescending(x => x.Created)
+                    .Paginate(query);
+            }
             return result.OrderByDescending(x => x.Created).Paginate(query);
         }
 
@@ -83,7 +94,14 @@ namespace Server.Api.Persistence
         {
             var filter = Builders<Study>.Filter.Eq(x => x.Id, studyId);
             var result = await Collection.Find(filter).Project(x => x.Results).FirstOrDefaultAsync();
-            return result.Select(x => x.StationId).ToImmutableHashSet();
+            return result.Select(x => x.StationId).OrderBy(x => x).ToImmutableHashSet();
+        }
+
+        public async Task<ImmutableHashSet<uint>> GetStationSensorsAsync(Guid studyId, uint stationId)
+        {
+            var filter = Builders<Study>.Filter.Eq(x => x.Id, studyId);
+            var result = await Collection.Find(filter).Project(x => x.Results).FirstOrDefaultAsync();
+            return result.Where(x => x.StationId == stationId).Select(x => x.SensorId).OrderBy(x => x).ToImmutableHashSet();
         }
 
         public async Task<Study> UpdateAsync(Guid id, State state, string name)
