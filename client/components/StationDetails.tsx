@@ -1,9 +1,12 @@
+import * as shape from 'd3-shape';
 import moment from 'moment';
 import * as React from 'react';
 import { Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Surface, Text, DataTable, ActivityIndicator } from 'react-native-paper';
 
+import Chart from '../components/value-chart/Chart';
+import { data1 } from '../components/value-chart/data';
 import { getStudyResults } from '../data';
 import { Result } from '../data/models';
 import baseUri from '../websocket';
@@ -58,8 +61,12 @@ const StationDetails = ({ studyId, stationId }: StationDetailsProps) => {
       };
     }, []);
   }
+
+  const data = [50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80];
+
   return (
     <ScrollView>
+      {/* <Chart /> */}
       <DataTable>
         <DataTable.Header>
           <DataTable.Title>Created</DataTable.Title>
