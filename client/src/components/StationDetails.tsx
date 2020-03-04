@@ -2,7 +2,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Theme } from '@react-navigation/native/lib/typescript/src/types';
 import moment from 'moment';
 import * as React from 'react';
-import { Platform, View } from 'react-native';
+import { View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
   DataTable,
