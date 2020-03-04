@@ -2,7 +2,7 @@ import { Feather } from '@expo/vector-icons';
 import * as React from 'react';
 import { Banner } from 'react-native-paper';
 
-import { axios } from '../axios';
+import { axios } from '../../axios';
 
 const NetworkErrorBanner = () => {
   const [visible, setVisible] = React.useState<boolean>(false);

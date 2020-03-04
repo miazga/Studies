@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Platform } from 'react-native';
 import { Provider as PaperProvider } from 'react-native-paper';
 
-import NavigationProvider from './providers/NavigationProvider';
-import { RealTimeUpdatesProvider } from './providers/RealTimeUpdatesProvider';
-import LightTheme from './theming/LightTheme';
+import NavigationProvider from './src/providers/NavigationProvider';
+import { RealTimeUpdatesProvider } from './src/providers/RealTimeUpdatesProvider';
+import LightTheme from './src/theming/LightTheme';
 
 export default function App() {
   return (
