@@ -3,7 +3,7 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import moment from 'moment';
 import * as React from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
   Subheading,
@@ -18,8 +18,8 @@ import {
 import { getStudyResults } from '../data';
 import { Result } from '../data/models';
 import { RootStackParamList } from '../providers/NavigationProvider';
+import { useUpdateResults } from '../providers/RealTimeUpdatesProvider';
 import { getPageSize, setPageSize } from '../utils';
-import baseUri from '../websocket';
 import BaseScreen from './BaseScreen';
 
 type ResultsListProps = {
@@ -36,6 +36,8 @@ const ResultsList = ({ studyId }: ResultsListProps) => {
   const [totalPages, setTotalPages] = React.useState(0);
   const [loading, setLoading] = React.useState(true);
 
+  useUpdateResults({ studyId, setResults });
+
   React.useEffect(() => {
     getResults();
   }, [page, itemsPerPage]);
@@ -48,33 +50,9 @@ const ResultsList = ({ studyId }: ResultsListProps) => {
     setLoading(false);
   };
 
-  // websockets doesnt work on web due to usecure connection - SSL/TLS setup required on server side
-  if (Platform.OS !== 'web') {
-    const webSocket = React.useRef(new WebSocket(`${baseUri}/studyresults?id=${studyId}`));
-
-    const startConnection = React.useCallback(() => {
-      webSocket.current.onmessage = e => {
-        const item = JSON.parse(e.data) as Result;
-        setResults(items => {
-          items.pop();
-          return [item, ...items];
-        });
-        setTotalResults(totalResults => totalResults + 1);
-      };
-    }, []);
-
-    const cancelConnection = React.useCallback(() => {
-      webSocket.current.close();
-    }, []);
-
-    React.useEffect(() => {
-      getItemsPerPage();
-      startConnection();
-      return () => {
-        cancelConnection();
-      };
-    }, []);
-  }
+  React.useEffect(() => {
+    getItemsPerPage();
+  }, []);
 
   const getItemsPerPage = async () => {
     const result = await getPageSize();

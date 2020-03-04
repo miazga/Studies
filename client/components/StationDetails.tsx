@@ -20,8 +20,8 @@ import { LineChart, Grid } from 'react-native-svg-charts';
 
 import { getStudyResults, getStudyStationSensors } from '../data';
 import { Result } from '../data/models';
+import { useUpdateResults } from '../providers/RealTimeUpdatesProvider';
 import { getPageSize, setPageSize } from '../utils';
-import baseUri from '../websocket';
 
 type StationDetailsProps = {
   studyId: string;
@@ -41,6 +41,8 @@ const StationDetails = ({ studyId, stationId, theme }: StationDetailsProps) => {
   const [totalPages, setTotalPages] = React.useState(0);
   const [loading, setLoading] = React.useState(true);
   const [itemsPerPage, setItemsPerPage] = React.useState(5);
+
+  useUpdateResults({ studyId, stationId, setResults });
 
   React.useEffect(() => {
     getResults();
@@ -70,34 +72,10 @@ const StationDetails = ({ studyId, stationId, theme }: StationDetailsProps) => {
     setSensors(result);
   };
 
-  // websockets doesnt work on web due to usecure connection - SSL/TLS setup required on server side
-  if (Platform.OS !== 'web') {
-    const webSocket = React.useRef(
-      new WebSocket(`${baseUri}/studyresults?id=${studyId}&stationId=${stationId}`)
-    );
-    const startConnection = React.useCallback(() => {
-      webSocket.current.onmessage = e => {
-        const item = JSON.parse(e.data) as Result;
-        setResults(items => {
-          items.pop();
-          return [item, ...items];
-        });
-      };
-    }, []);
-
-    const cancelConnection = React.useCallback(() => {
-      webSocket.current.close();
-    }, []);
-
-    React.useEffect(() => {
-      getSensors();
-      getItemsPerPage();
-      startConnection();
-      return () => {
-        cancelConnection();
-      };
-    }, []);
-  }
+  React.useEffect(() => {
+    getSensors();
+    getItemsPerPage();
+  }, []);
 
   const handleRefreshPress = async () => {
     await getItemsPerPage();

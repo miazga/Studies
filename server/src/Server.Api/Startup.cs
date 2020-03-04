@@ -8,8 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Server.Api.Handlers;
 using Server.Api.Persistence.MongoDb;
+using Server.Api.RealTimeUpdates;
 using Server.WebSocketManager;
 
 namespace Server.Api
@@ -34,7 +34,15 @@ namespace Server.Api
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
 
-            services.AddWebSocketManager();
+            services.AddCors(options => options.AddPolicy("HubPolicy", 
+                builder =>
+                {
+                    builder.AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowAnyOrigin();
+                }));
+            services.AddSignalR();
+            services.AddSingleton(new RealTimeUpdateHub());
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "My API", Version = "v1"}); });
         }
 
@@ -64,14 +72,11 @@ namespace Server.Api
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
+            
+            app.UseCors("HubPolicy");
 
-            var serviceScopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
-            var serviceProvider = serviceScopeFactory.CreateScope().ServiceProvider;
-
-            app.UseWebSockets();
-            app.MapWebSocketManager("/api/ws/studyresults", serviceProvider.GetService<StudyResultsWebSocketHandler>());
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers();
+                endpoints.MapHub<RealTimeUpdateHub>("/hubs/realtimeupdates"); });
         }
     }
 }

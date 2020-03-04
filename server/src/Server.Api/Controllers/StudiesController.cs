@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Server.Api.Handlers;
 using Server.Api.Models;
 using Server.Api.Models.Commands;
 using Server.Api.Models.Queries;
 using Server.Api.Persistence;
+using Server.Api.RealTimeUpdates;
 
 namespace Server.Api.Controllers
 {
@@ -17,14 +17,13 @@ namespace Server.Api.Controllers
     {
         private readonly ILogger<StudiesController> _logger;
         private readonly IStudiesRepository _repository;
-        private readonly StudyResultsWebSocketHandler _studyResultsWebSocketHandler;
+        private readonly RealTimeUpdateHub _realTimeUpdateHub;
 
-        public StudiesController(ILogger<StudiesController> logger, IStudiesRepository repository,
-            StudyResultsWebSocketHandler studyResultsWebSocketHandler)
+        public StudiesController(ILogger<StudiesController> logger, IStudiesRepository repository, RealTimeUpdateHub realTimeUpdateHub)
         {
             _logger = logger;
             _repository = repository;
-            _studyResultsWebSocketHandler = studyResultsWebSocketHandler;
+            _realTimeUpdateHub = realTimeUpdateHub;
         }
 
         [HttpGet("studies")]
@@ -93,8 +92,7 @@ namespace Server.Api.Controllers
 
             if (study == null) return BadRequest("Cannot find Study with given Id");
 
-            await _studyResultsWebSocketHandler.SendMessageToAllAsync(id.ToString(), command.StationId.ToString(),
-                result);
+            await _realTimeUpdateHub.Notify(id, result);
 
             return Accepted();
         }
