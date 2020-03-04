@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Server.Api.Persistence.MongoDb;
 using Server.Api.RealTimeUpdates;
+using Server.Api.Security;
 using Server.WebSocketManager;
 
 namespace Server.Api
@@ -34,13 +35,7 @@ namespace Server.Api
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
 
-            services.AddCors(options => options.AddPolicy("HubPolicy", 
-                builder =>
-                {
-                    builder.AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowAnyOrigin();
-                }));
+            services.AddCorsDefinitions();
             services.AddSignalR();
             services.AddSingleton(new RealTimeUpdateHub());
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "My API", Version = "v1"}); });
@@ -56,7 +51,15 @@ namespace Server.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseDevelopmentCors();
+            }
+            else
+            {
+                app.UseProductionCors();
+            }
             app.UseHsts();
 
             app.UseSwagger();
@@ -73,7 +76,6 @@ namespace Server.Api
             app.UseRouting();
             app.UseAuthorization();
             
-            app.UseCors("HubPolicy");
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers();
                 endpoints.MapHub<RealTimeUpdateHub>("/hubs/realtimeupdates"); });

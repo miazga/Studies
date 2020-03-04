@@ -1,3 +1,3 @@
 export default __DEV__
-  ? 'localhost:5100/hubs/realtimeupdates'
-  : `${window.location.hostname}/hubs/realtimeupdates`;
+  ? 'http://localhost:5100/hubs/realtimeupdates'
+  : `https://${window.location.hostname}/hubs/realtimeupdates`;
