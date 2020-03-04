@@ -4,8 +4,8 @@
     "Server": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "docs",
-      "applicationUrl": "https://0.0.0.0:5101;http://0.0.0.0:5100",
+      "launchUrl": "docs/index.html",
+      "applicationUrl": "http://0.0.0.0:5100",
       "environmentVariables": {
         "PORT": "5100",
         "ASPNETCORE_ENVIRONMENT": "Development"

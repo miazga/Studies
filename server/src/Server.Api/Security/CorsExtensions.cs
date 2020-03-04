@@ -12,7 +12,7 @@ namespace Server.Api.Security
                 {
                     builder.AllowAnyMethod()
                         .AllowAnyHeader()
-                        .WithOrigins("http://192.168.8.113:19006")
+                        .WithOrigins("http://192.168.8.113:19006", "http://localhost:5100")
                         .AllowCredentials();
                 }));
             
