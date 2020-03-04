@@ -19,7 +19,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"stationId\": {{RandomStationId}},\n\t\"sensorId\": {{RandomSensorId}},\n\t\"value\": {{RandomValue}},\n\t\"timestamp\": {{RandomTimestamp}}\n}",
+					"raw": "{\n\t\"stationId\": {{RandomStationId}},\n\t\"sensorId\": {{RandomSensorId}},\n\t\"value\": {{RandomValue}},\n\t\"timestamp\": {{CurrentTimeStamp}}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -52,9 +52,7 @@
 					"pm.environment.set(\"RandomStationId\", _.random(1,9));",
 					"pm.environment.set(\"RandomSensorId\", _.random(1,20));",
 					"pm.environment.set(\"RandomValue\", _.random(20,100));",
-					"pm.environment.set(\"RandomTimestamp\", _.random(1582903076,1682903076));",
-					"",
-					""
+					"pm.environment.set(\"CurrentTimeStamp\", Math.round(new Date().getTime()/1000));"
 				]
 			}
 		},
@@ -71,25 +69,25 @@
 	],
 	"variable": [
 		{
-			"id": "d7c0944f-4105-430c-846c-5fa4465c7a58",
+			"id": "15ae727a-a9a1-459f-8ba1-eb36078f699e",
 			"key": "RandomStationId",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "180be15f-ec32-4a4d-98b2-363c8bf51520",
+			"id": "733253f4-18ae-4d1d-be61-81e87accbf6d",
 			"key": "RandomSensorId",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "883f9002-8248-41f6-938b-bcc09f4f4865",
+			"id": "cb2ce24f-8116-4103-9168-3fe203f537a9",
 			"key": "RandomValue",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"id": "28d9282f-302b-4d49-b8ac-596de21c351a",
+			"id": "0bf7c676-53d7-4b73-99f6-3fc4fe13df24",
 			"key": "RandomTimestamp",
 			"value": "",
 			"type": "string"
