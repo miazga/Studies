@@ -11,7 +11,6 @@ using Microsoft.OpenApi.Models;
 using Server.Api.Persistence.MongoDb;
 using Server.Api.RealTimeUpdates;
 using Server.Api.Security;
-using Server.WebSocketManager;
 
 namespace Server.Api
 {
