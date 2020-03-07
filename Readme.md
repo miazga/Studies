@@ -1,4 +1,4 @@
-# Application for storing laboratory test results.
+# Application for storing laboratory test results
 <p align="center">
 <img src="docs/images/Native-main.png" alt="Native app - main screen" height="500">
 <img src="docs/images/Native-details.png" alt="Native app - details screen" height="500">
@@ -13,7 +13,7 @@ Mobile app can be run by scanning QR code using Expo app: https://expo.io/@mattk
 API reference is available under: https://studies-pk.herokuapp.com/docs/index.html
 
 # Using the API
-Use the REST API add new Study results.
+Use the REST API /api/study/{id}/result endpoint add new Study result
 
 <img src="docs/images/Postman-values.png" alt="Postman PUT with values" height="200">
 <img src="docs/images/Postman-random-values.png" alt="Postman PUT with random values" height="200">

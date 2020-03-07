@@ -13,6 +13,31 @@
 
   <ItemGroup>
     <Folder Include="Models\Results" />
+    <Folder Include="wwwroot" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\apple\icons\icon_180x180.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\apple\icons\icon_192x192.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\apple\icons\icon_512x512.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\apple\splash\icon_1125x2436.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\apple\splash\icon_1136x640.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\apple\splash\icon_1242x2208.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\apple\splash\icon_1242x2688.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\apple\splash\icon_1334x750.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\apple\splash\icon_1792x828.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\apple\splash\icon_2208x1242.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\apple\splash\icon_2436x1125.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\apple\splash\icon_2688x1242.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\apple\splash\icon_640x1136.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\apple\splash\icon_750x1334.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\apple\splash\icon_828x1792.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\static\js\2.443db71f.chunk.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\static\js\2.443db71f.chunk.js.gz" />
+    <_ContentIncludedByDefault Remove="wwwroot\static\js\app.94a3ff8f.chunk.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\static\js\app.94a3ff8f.chunk.js.gz" />
+    <_ContentIncludedByDefault Remove="wwwroot\static\js\runtime~app.1f3c3aae.js" />
+    <_ContentIncludedByDefault Remove="wwwroot\static\js\runtime~app.1f3c3aae.js.gz" />
   </ItemGroup>
 
 </Project>
