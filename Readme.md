@@ -1,4 +1,5 @@
 # Application for storing laboratory test results.
+!["Native app - main screen"](docs/images/Native-main.png =250x)
 
 # Deployed application
 Sample app is hosted on heroku platform: https://studies-pk.herokuapp.com/
