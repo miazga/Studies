@@ -37,7 +37,7 @@ namespace Server.Api
             services.AddCorsDefinitions();
             services.AddSignalR();
             services.AddSingleton(new RealTimeUpdateHub());
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "My API", Version = "v1"}); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "API Reference", Version = "v1"}); });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -64,7 +64,7 @@ namespace Server.Api
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Reference V1");
                 c.RoutePrefix = "docs";
             });
 

@@ -3,6 +3,7 @@ import * as React from 'react';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 
 import { Result } from '../data/models';
+//@ts-ignore
 import baseUrl from './websocket';
 
 type RealTimeProviderType = {
