@@ -1,15 +1,22 @@
 # Application for storing laboratory test results.
-!["Native app - main screen"](docs/images/Native-main.png =250x)
+<img src="docs/images/Native-main.png" alt="Native app - main screen" height="500">
+<img src="docs/images/Native-details.png" alt="Native app - details screen" height="500">
+<img src="docs/images/Web-details.png" alt="Web app - details screen" height="500">
 
 # Deployed application
-Sample app is hosted on heroku platform: https://studies-pk.herokuapp.com/
+Sample app is hosted on Heroku platform: https://studies-pk.herokuapp.com/
 Mobile app can be run by scanning QR code using Expo app: https://expo.io/@mattkobosko/studies
 API reference is available under: https://studies-pk.herokuapp.com/docs/index.html
 
 # Using the API
 Use the REST API add new Study results.
 
+<img src="docs/images/Postman-values.png" alt="Postman PUT with values" height="200">
+<img src="docs/images/Postman-random-values.png" alt="Postman PUT with random values" height="200">
+
 Full API documentation is available under /docs/index.html.
+
+<img src="docs/images/API-reference.png" alt="Native app - main screen" height="500">
 
 # Overview
 ## Tech Stack C# + TypeScript
@@ -87,8 +94,8 @@ expo web
 
 # Deployment
 ## Server API should be deployed as a docker container
-Steps to deploy into free heroku app:
-- create free app on heroku
+Steps to deploy into free Heroku app:
+- create free app on Heroku
 - find and replace studies-pk.herokuapp.com with your target host/domain
 - build a static SPA by running
 ```bash
@@ -101,7 +108,7 @@ cd client
 cd server
 ./scripts/build-and-push.sh
 ```
-- setup connection string for the Mongo using heroku panel add add a config:
+- setup connection string for the Mongo using Heroku panel add add a config:
 MongoDbSettings__ConnectionString="mongodb://{yourdatabase}"
 - to build mobile app you must setup your account and run
 ```bash
@@ -134,6 +141,35 @@ public static IServiceCollection AddCorsDefinitions(this IServiceCollection serv
     ...
 }
 ```
+- Data Structure - example Mongo document of the study:
+```
+{
+    _id: BinData(3, 'TspP3zKBz0690SUPqFGEMg=='),
+    Name: 'Study A',
+    Results: [
+        {
+            StationId: 3,
+            Created: ISODate('2020-03-07T12:09:11.000Z'),
+            SensorId: 16,
+            Value: '89'
+        },
+        {
+            StationId: 2,
+            Created: ISODate('2020-03-07T12:09:12.000Z'),
+            SensorId: 10,
+            Value: '48'
+        },
+        {
+            StationId: 2,
+            Created: ISODate('2020-03-07T12:09:26.000Z'),
+            SensorId: 9,
+            Value: '55'
+        }
+    ],
+    Created: ISODate('2020-03-07T13:06:52.828Z'),
+    State: 1
+}
+```
 
 
 # TODO
@@ -142,7 +178,3 @@ public static IServiceCollection AddCorsDefinitions(this IServiceCollection serv
 - [x] Deploy on Heroku
 - [ ] Add user authentication
 - [ ] Use RabbitMQ as a batch for high performance
-
-
-docs
-add new results
