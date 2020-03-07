@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  mongo:
+    image: mongo:4.2
+    ports:
+      - '27017:27017'
+
+  mongo-express:
+    image: mongo-express:latest
+    ports:
+      - '8081:8081' 
