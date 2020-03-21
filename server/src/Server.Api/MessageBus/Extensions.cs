@@ -11,9 +11,9 @@ namespace Server.Api.MessageBus
 {
     public static class Extensions
     {
-        public static ContainerBuilder AddRabbitMq(this ContainerBuilder builder, IConfiguration configuration)
+        public static void AddRabbitMq(this ContainerBuilder builder, IConfiguration configuration)
         {
-            return builder.AddMassTransit(x =>
+            builder.AddMassTransit(x =>
             {
                 x.AddConsumers(Assembly.GetExecutingAssembly());
 
@@ -32,13 +32,12 @@ namespace Server.Api.MessageBus
             });
         }
 
-        public static IApplicationBuilder UseRabbitMq(this IApplicationBuilder builder, IConfiguration configuration)
+        public static void UseRabbitMq(this IApplicationBuilder builder, IConfiguration configuration)
         {
             var busControl = builder.ApplicationServices.GetService<IBusControl>();
             var busSettings = configuration.GetOptions<RabbitMqSettings>(nameof(RabbitMqSettings));
 
             busControl.Start(TimeSpan.FromMilliseconds(busSettings.StartTimeoutInMilliSeconds));
-            return builder;
         }
     }
 }
