@@ -123,19 +123,18 @@ namespace Server.Api.Middleware
 
         private Uri BuildTargetUri(HttpRequest request)
         {
-            Uri targetUri = null;
-
-            var referer = request.Headers["Referer"].ToString();
-            var path = request.Path;
 
             if (request.Path.StartsWithSegments("/rabbit", out var remainingPath))
                 return new Uri(RabbitMqUri + remainingPath);
 
+            var referer = request.Headers["Referer"].ToString();
+            var path = request.Path;
+            
             if ((path.StartsWithSegments("/api") || path.StartsWithSegments("/js") ||
                  path.StartsWithSegments("/css") || path.StartsWithSegments("/img")) && referer.Contains("rabbit"))
                 return new Uri(RabbitMqUri + path.Value);
 
-            return targetUri;
+            return null;
         }
     }
 }

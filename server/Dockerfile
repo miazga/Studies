@@ -13,7 +13,7 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-bionic as runtime
 FROM rabbitmq:3-management as rabbit
 WORKDIR /
 COPY --from=runtime . ./
-COPY --from=build /app/out ./app/
+COPY --from=build /app/out ./
 COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 

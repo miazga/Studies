@@ -78,10 +78,6 @@ namespace Server.Api
             });
 
             app.UseMiddleware<RabbitMqManagementHost>();
-
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
-
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
@@ -93,6 +89,9 @@ namespace Server.Api
                 endpoints.MapControllers();
                 endpoints.MapHub<RealTimeUpdateHub>("/hubs/realtimeupdates");
             });
+            
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
         }
     }
 }

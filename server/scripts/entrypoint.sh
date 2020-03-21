@@ -1,3 +1,3 @@
 #!/bin/sh
 set -e
-rabbitmq-server & dotnet app/Server.Api.dll
+rabbitmq-server & dotnet Server.Api.dll
