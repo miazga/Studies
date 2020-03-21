@@ -5,7 +5,6 @@ using Server.Api.Models;
 
 namespace Server.Api.RealTimeUpdates
 {
-    
     public class RealTimeUpdateHub : Hub
     {
         public async Task Notify(Guid studyId, Result result)

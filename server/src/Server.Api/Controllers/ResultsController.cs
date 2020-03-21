@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
+using Server.Api.Consumers;
 using Server.Api.Models;
 using Server.Api.Models.Commands;
 using Server.Api.Models.Queries;
@@ -12,13 +14,13 @@ namespace Server.Api.Controllers
     [ApiController]
     public class ResultsController : ControllerBase
     {
-        private readonly RealTimeUpdateHub _realTimeUpdateHub;
         private readonly IStudiesRepository _repository;
+        private readonly IBus _bus;
 
-        public ResultsController(IStudiesRepository repository, RealTimeUpdateHub realTimeUpdateHub)
+        public ResultsController(IStudiesRepository repository, IBus bus)
         {
             _repository = repository;
-            _realTimeUpdateHub = realTimeUpdateHub;
+            _bus = bus;
         }
 
         [HttpGet("/api/study/{id}/results")]
@@ -47,11 +49,7 @@ namespace Server.Api.Controllers
                 Created = DateTimeOffset.FromUnixTimeSeconds(command.Timestamp).DateTime
             };
 
-            var study = await _repository.AddResultAsync(id, result);
-
-            if (study == null) return BadRequest("Cannot find Study with given Id");
-
-            await _realTimeUpdateHub.Notify(id, result);
+            await _bus.Publish(new AddResultMessage(id, result));
 
             return Accepted();
         }

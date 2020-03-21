@@ -7,7 +7,7 @@ namespace Server.Api.Security
     {
         public static IServiceCollection AddCorsDefinitions(this IServiceCollection services)
         {
-            services.AddCors(options => options.AddPolicy("DevCorsPolicy", 
+            services.AddCors(options => options.AddPolicy("DevCorsPolicy",
                 builder =>
                 {
                     builder.AllowAnyMethod()
@@ -15,8 +15,8 @@ namespace Server.Api.Security
                         .WithOrigins("http://192.168.8.113:19006", "http://localhost:5100")
                         .AllowCredentials();
                 }));
-            
-            services.AddCors(options => options.AddPolicy("ProdCorsPolicy", 
+
+            services.AddCors(options => options.AddPolicy("ProdCorsPolicy",
                 builder =>
                 {
                     builder.AllowAnyMethod()
@@ -31,11 +31,10 @@ namespace Server.Api.Security
         {
             return builder.UseCors("DevCorsPolicy");
         }
-        
+
         public static IApplicationBuilder UseProductionCors(this IApplicationBuilder builder)
         {
             return builder.UseCors("ProdCorsPolicy");
         }
-        
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Server.Api.MessageBus;
 using Server.Api.Middleware;
 using Server.Api.Persistence.MongoDb;
 using Server.Api.RealTimeUpdates;
@@ -34,6 +35,8 @@ namespace Server.Api
                 options.JsonSerializerOptions.WriteIndented = true;
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
+            
+            services.Configure<RabbitMqSettings>(Configuration.GetSection(nameof(RabbitMqSettings)));
 
             services.AddCorsDefinitions();
             services.AddSignalR();
@@ -47,6 +50,7 @@ namespace Server.Api
                 .AsImplementedInterfaces();
             builder.AddMongo();
             builder.AddStudiesRepository();
+            builder.AddRabbitMq(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -60,6 +64,7 @@ namespace Server.Api
             {
                 app.UseProductionCors();
             }
+            
             app.UseHsts();
 
             app.UseSwagger();
@@ -77,8 +82,9 @@ namespace Server.Api
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
-            
 
+            app.UseRabbitMq(Configuration);
+            
             app.UseEndpoints(endpoints => { endpoints.MapControllers();
                 endpoints.MapHub<RealTimeUpdateHub>("/hubs/realtimeupdates"); });
         }

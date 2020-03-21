@@ -10,7 +10,7 @@ namespace Server.Api.Middleware
     public class RabbitMqManagementHost
     {
         private const string RabbitMqUri = "http://localhost:15672";
-        
+
         private static readonly HttpClient _httpClient = new HttpClient();
         private readonly RequestDelegate _nextMiddleware;
 

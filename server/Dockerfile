@@ -17,7 +17,4 @@ COPY --from=build /app/out ./app/
 COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-ENV RABBITMQ_DEFAULT_USER=rabbit
-ENV RABBITMQ_DEFAULT_PASS=rabbit
-
 ENTRYPOINT ["entrypoint.sh"]

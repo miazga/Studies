@@ -1,0 +1,45 @@
+using System;
+using System.Reflection;
+using Autofac;
+using MassTransit;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Server.Api.IoC;
+
+namespace Server.Api.MessageBus
+{
+    public static class Extensions
+    {
+        public static ContainerBuilder AddRabbitMq(this ContainerBuilder builder, IConfiguration configuration)
+        {
+            return builder.AddMassTransit(x =>
+            {
+                x.AddConsumers(Assembly.GetExecutingAssembly());
+
+                var busSettings = configuration.GetOptions<RabbitMqSettings>(nameof(RabbitMqSettings));
+
+                x.AddBus(context => Bus.Factory.CreateUsingRabbitMq(cfg =>
+                {
+                    cfg.Host(busSettings.Host, h =>
+                    {
+                        h.Username(busSettings.Username);
+                        h.Password(busSettings.Password);
+                    });
+                    
+                    cfg.ConfigureEndpoints(context);
+
+                }));
+            });
+        }
+
+        public static IApplicationBuilder UseRabbitMq(this IApplicationBuilder builder, IConfiguration configuration)
+        {
+            var busControl = builder.ApplicationServices.GetService<IBusControl>();
+            var busSettings = configuration.GetOptions<RabbitMqSettings>(nameof(RabbitMqSettings));
+            
+            busControl.Start(TimeSpan.FromMilliseconds(busSettings.StartTimeoutInMilliSeconds));
+            return builder;
+        }
+    }
+}

@@ -14,7 +14,7 @@ namespace Server.Api.Controllers
         {
             _repository = repository;
         }
-        
+
         [HttpGet("/api/study/{id}/station/{stationId}/sensors")]
         public async Task<IActionResult> GetStudyStationSensors(Guid id, uint stationId)
         {
