@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Server.Api.Middleware;
 using Server.Api.Persistence.MongoDb;
 using Server.Api.RealTimeUpdates;
 using Server.Api.Security;
@@ -67,6 +68,8 @@ namespace Server.Api
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Reference V1");
                 c.RoutePrefix = "docs";
             });
+            
+            app.UseMiddleware<RabbitMqManagementHost>();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
