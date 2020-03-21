@@ -35,13 +35,16 @@ namespace Server.Api
                 options.JsonSerializerOptions.WriteIndented = true;
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
-            
+
             services.Configure<RabbitMqSettings>(Configuration.GetSection(nameof(RabbitMqSettings)));
 
             services.AddCorsDefinitions();
             services.AddSignalR();
             services.AddSingleton(new RealTimeUpdateHub());
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "API Reference", Version = "v1"}); });
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "API Reference", Version = "v1"});
+            });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -64,7 +67,7 @@ namespace Server.Api
             {
                 app.UseProductionCors();
             }
-            
+
             app.UseHsts();
 
             app.UseSwagger();
@@ -73,7 +76,7 @@ namespace Server.Api
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Reference V1");
                 c.RoutePrefix = "docs";
             });
-            
+
             app.UseMiddleware<RabbitMqManagementHost>();
 
             app.UseDefaultFiles();
@@ -84,9 +87,12 @@ namespace Server.Api
             app.UseAuthorization();
 
             app.UseRabbitMq(Configuration);
-            
-            app.UseEndpoints(endpoints => { endpoints.MapControllers();
-                endpoints.MapHub<RealTimeUpdateHub>("/hubs/realtimeupdates"); });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<RealTimeUpdateHub>("/hubs/realtimeupdates");
+            });
         }
     }
 }

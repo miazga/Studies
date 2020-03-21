@@ -7,15 +7,14 @@ using Server.Api.Models;
 using Server.Api.Models.Commands;
 using Server.Api.Models.Queries;
 using Server.Api.Persistence;
-using Server.Api.RealTimeUpdates;
 
 namespace Server.Api.Controllers
 {
     [ApiController]
     public class ResultsController : ControllerBase
     {
-        private readonly IStudiesRepository _repository;
         private readonly IBus _bus;
+        private readonly IStudiesRepository _repository;
 
         public ResultsController(IStudiesRepository repository, IBus bus)
         {

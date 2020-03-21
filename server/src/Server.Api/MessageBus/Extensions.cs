@@ -26,9 +26,8 @@ namespace Server.Api.MessageBus
                         h.Username(busSettings.Username);
                         h.Password(busSettings.Password);
                     });
-                    
-                    cfg.ConfigureEndpoints(context);
 
+                    cfg.ConfigureEndpoints(context);
                 }));
             });
         }
@@ -37,7 +36,7 @@ namespace Server.Api.MessageBus
         {
             var busControl = builder.ApplicationServices.GetService<IBusControl>();
             var busSettings = configuration.GetOptions<RabbitMqSettings>(nameof(RabbitMqSettings));
-            
+
             busControl.Start(TimeSpan.FromMilliseconds(busSettings.StartTimeoutInMilliSeconds));
             return builder;
         }
