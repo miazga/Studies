@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="appsettings.json" CopyToPublishDirectory="Always" />
+  </ItemGroup>
+
+  <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\apple\icons\icon_180x180.png" />
     <_ContentIncludedByDefault Remove="wwwroot\apple\icons\icon_192x192.png" />
     <_ContentIncludedByDefault Remove="wwwroot\apple\icons\icon_512x512.png" />
