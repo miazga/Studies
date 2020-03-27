@@ -26,6 +26,7 @@ namespace Server.Api.MessageBus
                         h.Username(busSettings.Username);
                         h.Password(busSettings.Password);
                     });
+
                     cfg.PrefetchCount = busSettings.PrefetchCount;
                     cfg.ConfigureEndpoints(context);
                 }));
